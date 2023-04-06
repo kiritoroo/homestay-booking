@@ -1,22 +1,12 @@
-<script setup lang="ts">
-import HelloWorld from '@comp/HelloWorld.vue'
-</script>
-
 <template>
-  <HelloWorld msg="Vite + Vue" />
+  <main id="content">
+    <router-view v-slot="{ Component }">
+      <Suspense v-if="Component">
+        <component :is="Component" />
+        <template #fallback>
+          <h1>Loading...</h1>
+        </template>
+      </Suspense>
+    </router-view>
+  </main>
 </template>
-
-<style scoped>
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.vue:hover {
-  filter: drop-shadow(0 0 2em #42b883aa);
-}
-</style>
