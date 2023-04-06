@@ -1,13 +1,19 @@
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
-import eslint from 'vite-plugin-eslint';
-import path from 'path';
+import eslint from 'vite-plugin-eslint'
+import tsconfigPaths from 'vite-tsconfig-paths'
+import path from 'path'
 
 export default defineConfig({
   resolve: {
     alias: {
-      '@comp/*': path.resolve(__dirname, './src/components/*')
+      '@': path.resolve(__dirname, './src'),
+      '@comp': path.resolve(__dirname, './src/components')
     }
   },
-  plugins: [vue(), eslint()]
+  plugins: [
+    vue(),
+    eslint(),
+    tsconfigPaths()
+  ]
 })
