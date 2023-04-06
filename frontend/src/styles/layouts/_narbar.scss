@@ -25,7 +25,7 @@
       display: flex;
       flex-direction: row;
       justify-content: center;
-      align-items: center;
+      align-items: baseline;
       text-decoration: none;
       color: #ffffff;
 
@@ -35,7 +35,7 @@
 
         span:nth-child(-n+3) {
           display: inline-block;
-          font-size: 25px;
+          font-size: 30px;
           font-weight: 700;
         }
       
@@ -53,7 +53,7 @@
 
         &_appear_eff1 {
           &-enter-active {
-            transition: all 0.5s ease-out;
+            transition: all 1s cubic-bezier(0.23, 1, 0.32, 1);
           }
     
           &-enter-from {
@@ -67,7 +67,7 @@
 
         &_appear_eff2 {
           &-enter-active {
-            transition: all 0.5s ease-out;
+            transition: all 1s cubic-bezier(0.23, 1, 0.32, 1);
           }
     
           &-enter-from {
@@ -81,7 +81,7 @@
 
         &_appear_eff3 {
           &-enter-active {
-            transition: all 0.5s ease-out;
+            transition: all 1s cubic-bezier(0.23, 1, 0.32, 1);
           }
     
           &-enter-from {
@@ -105,4 +105,101 @@
       transform: scale(0.8);
     }
   }
+
+  .menu {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 50px;
+
+    a {
+      text-decoration: none;
+      color: #262320;
+      font-weight: 500;
+      font-size: 18px;
+      transition: transform 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+      position: relative;
+
+      &::before {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        display: block;
+        width: 99%;
+        height: 2px;
+        background-color: #d36dec;
+        transform: scaleX(0%);
+        transition: transform 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+        transform-origin: 100% 0;
+      }
+      &:hover {
+        transform: scale(1.1);
+      }
+      &:hover::before {
+        transform: scaleX(100%);
+        transform-origin: 0 0;
+      }
+      &:active {
+        transform: scale(0.9);
+      }
+    }
+  }
+
+  .user {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 40px;
+
+    .account {
+      display: flex;
+      flex-direction: row;
+      gap: 10px;
+  
+      button {
+        padding: 5px 20px 5px 20px;
+        font-family: Poppins, sans-serif;
+        font-size: 16px;
+        font-weight: 500;
+      }
+  
+      &_login {
+        border: none;
+        background: none;
+        border: solid 2px #FFFFFF;
+        border-radius: 20px;
+        transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+  
+        &:hover {
+          transform: scale(1.1);
+          border-color: #f9e2ff;
+        }
+        &:active {
+          transform: scale(0.9);
+        }
+      }
+  
+      &_register {
+        background: none;
+        border: solid 2px #E9E9E9;
+        border-radius: 20px;
+        transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+  
+        &:hover {
+          background: #f9e2ff;
+          border-color: #f9e2ff;
+          transform: scale(1.1);
+        }
+        &:active {
+          transform: scale(0.9);
+        }
+      }
+    }
+  }
+
+
 }

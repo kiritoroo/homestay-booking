@@ -22,13 +22,31 @@
     </section>
 
     <section>
-      <router-link :to="{ name: 'about' }">
-        About
-      </router-link>
+      <div class="menu">
+        <router-link :to="{ name: 'about' }">
+          About
+        </router-link>
+        <router-link :to="{ name: 'news' }">
+          News
+        </router-link>
+        <router-link :to="{ name: 'contact' }">
+          Contact
+        </router-link>
+      </div>
     </section>
 
     <section>
-      <div>Login</div>
+      <div class="user">
+        <div class="account">
+          <button class="account_login">Login</button>
+          <button class="account_register">Register</button>
+        </div>
+        <DropdownLang />
+      </div>
     </section>
   </header>
 </template>
+
+<script setup lang="ts">
+import DropdownLang from '@comp/DropdownLang.vue'
+</script>

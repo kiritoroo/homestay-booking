@@ -16,6 +16,22 @@ const routes = [
     meta: {
       title: 'Home Page'
     }
+  },
+  {
+    path: '/news',
+    component: () => import('@view/NewsPage.vue'),
+    name: 'news',
+    meta: {
+      title: 'News Page'
+    }
+  },
+  {
+    path: '/contact',
+    component: () => import('@view/ContactPage.vue'),
+    name: 'contact',
+    meta: {
+      title: 'Contact Page'
+    }
   }
 ]
 
@@ -26,7 +42,7 @@ const router = createRouter({
 
 router.afterEach((to, from) => {
   const _baseTitle = "Totoro Homestay"
-  document.title = (to.meta.title) ? `${_baseTitle} - ${to.meta.title}` : _baseTitle;
+  document.title = (to.meta.title) ? `${_baseTitle} | ${to.meta.title}` : _baseTitle;
 })
 
 export default router
