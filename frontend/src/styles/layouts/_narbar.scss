@@ -1,0 +1,108 @@
+#navbar {
+  width: 100vw;
+  padding: 30px 40px 30px 40px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+
+  .logo {
+    &_appear_eff {
+      &-enter-active {
+        transition: all 1s ease-out;
+      }
+
+      &-enter-from {
+        opacity: 0;
+      }
+
+      &-enter-to {
+        opacity: 1;
+      }
+    }
+
+    &_link {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+      text-decoration: none;
+      color: #ffffff;
+
+      &_name {
+        transition: all 0.2s ease-out;
+        transform-origin: center center;
+
+        span:nth-child(-n+3) {
+          display: inline-block;
+          font-size: 25px;
+          font-weight: 700;
+        }
+      
+        span:nth-child(1) {
+          color: #1391D2;
+        }
+      
+        span:nth-child(2) {
+          color: #FC9E15;
+        }
+      
+        span:nth-child(3) {
+          color: #E3403D;
+        }
+
+        &_appear_eff1 {
+          &-enter-active {
+            transition: all 0.5s ease-out;
+          }
+    
+          &-enter-from {
+            transform: scale(1.9);
+          }
+    
+          &-enter-to {
+            transform: scale(1);
+          }
+        }
+
+        &_appear_eff2 {
+          &-enter-active {
+            transition: all 0.5s ease-out;
+          }
+    
+          &-enter-from {
+            transform: scale(1.6);
+          }
+    
+          &-enter-to {
+            transform: scale(1);
+          }
+        }
+
+        &_appear_eff3 {
+          &-enter-active {
+            transition: all 0.5s ease-out;
+          }
+    
+          &-enter-from {
+            transform: scale(1.3);
+          }
+    
+          &-enter-to {
+            transform: scale(1);
+          }
+        }
+      }
+  
+      &_inc {
+        color: #262320;
+        font-size: 20px;
+        font-weight: 500;
+      }
+    }
+
+    &:active .logo_link_name {
+      transform: scale(0.8);
+    }
+  }
+}
