@@ -1,0 +1,29 @@
+{
+  "title": {
+    "home": "Trang Chủ",
+    "about": "Giới thiệu",
+    "news": "Ưu Đãi",
+    "contact": "Liên hệ"
+  },
+  "nav": {
+    "about": "Giới thiệu",
+    "news": "Ưu đãi",
+    "contact": "Liên hệ",
+    "login": "Đăng nhập",
+    "register": "Đăng ký"
+  },
+  "locale": {
+    "en": {
+      "lang": "Tiếng Anh",
+      "short": "EN"
+    },
+    "vn": {
+      "lang": "Tiếng Việt",
+      "short": "VN"
+    },
+    "ja": {
+      "lang": "Tiếng Nhật",
+      "short": "JP"
+    }
+  }
+}

@@ -2,7 +2,7 @@
   <header id="navbar">
     <section class="logo">
       <Transition name="logo_appear_eff" appear>
-        <router-link class="logo_link" :to="{ name: 'home' }">
+        <RouterLink class="logo_link" :to="Trans.i18nRoute({ name: 'home' })">
           <div class="logo_link_name">
             <Transition name="logo_link_name_appear_eff1" appear>
               <span>To</span>
@@ -17,29 +17,33 @@
           <div class="logo_link_inc">
             &nbsp;Homestay
           </div>
-        </router-link>
+        </RouterLink>
       </Transition>
     </section>
 
     <section>
       <div class="menu">
-        <router-link :to="{ name: 'about' }">
-          About
-        </router-link>
-        <router-link :to="{ name: 'news' }">
-          News
-        </router-link>
-        <router-link :to="{ name: 'contact' }">
-          Contact
-        </router-link>
+        <RouterLink :to="Trans.i18nRoute({ name: 'about' })">
+          {{ $t("nav.about") }}
+        </RouterLink>
+        <RouterLink :to="Trans.i18nRoute({ name: 'news' })">
+          {{ $t("nav.news") }}
+        </RouterLink>
+        <RouterLink :to="Trans.i18nRoute({ name: 'contact' })">
+          {{ $t("nav.contact") }}
+        </RouterLink>
       </div>
     </section>
 
     <section>
       <div class="user">
         <div class="account">
-          <button class="account_login">Login</button>
-          <button class="account_register">Register</button>
+          <button class="account_login">
+            {{ $t("nav.login") }}
+          </button>
+          <button class="account_register">
+            {{ $t("nav.register") }}
+          </button>
         </div>
         <DropdownLang />
       </div>
@@ -48,5 +52,6 @@
 </template>
 
 <script setup lang="ts">
+import Trans from '@i18n/translation'
 import DropdownLang from '@comp/DropdownLang.vue'
 </script>

@@ -2,6 +2,9 @@
   position: relative;
 
   button {
+    height: 40px;
+    width: 40px;
+    box-sizing: border-box;
     border: none;
     background: none;
     padding: 5px 8px 5px 8px;
@@ -41,6 +44,7 @@
       li {
         padding: 10px 10px 10px 20px;
         transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+        background-color: #FAFAFA;
         cursor: pointer;
 
         &:hover {
@@ -49,7 +53,13 @@
         &:active {
           transform: scale(0.8);
         }
+
+        &.active {
+          background-color: #F9E2FF;
+        }
       }
+
+
 
       li:first-child {
         border-top-left-radius: 15px;

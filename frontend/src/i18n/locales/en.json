@@ -1,0 +1,29 @@
+{
+  "title": {
+    "home": "Home Page",
+    "about": "About Page",
+    "news": "News Page",
+    "contact": "Contact Page"
+  },
+  "nav": {
+    "about": "About",
+    "news": "News",
+    "contact": "Contact",
+    "login": "Login",
+    "register": "Register"
+  },
+  "locale": {
+    "en": {
+      "lang": "English",
+      "short": "EN"
+    },
+    "vn": {
+      "lang": "Vietnamese",
+      "short": "VN"
+    },
+    "ja": {
+      "lang": "Japanese",
+      "short": "JP"
+    }
+  }
+}

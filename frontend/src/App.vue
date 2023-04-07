@@ -14,4 +14,12 @@
 
 <script setup lang="ts">
 import Navbar from '@layout/NavBar.vue'
+import router from './router'
+import { useI18n } from 'vue-i18n'
+const { t } = useI18n()
+
+router.afterEach((to) => {
+  const _baseTitle = 'Totoro'
+  document.title = to.name ? `${_baseTitle} | ${t(`title.${String(to.name)}`)}` : _baseTitle
+})
 </script>

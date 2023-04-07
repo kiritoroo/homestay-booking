@@ -1,48 +1,40 @@
-import { createRouter, createWebHashHistory } from 'vue-router'
+import { createRouter, createWebHashHistory, RouteRecordRaw, RouterView } from 'vue-router'
+import HomePage from '@view/HomePage.vue'
+import Trans from '@i18n/translation'
 
-const routes = [
+const routes: Array<RouteRecordRaw>  = [
   {
-    path: '/',
-    component: () => import('@view/HomePage.vue'),
-    name: 'home',
-    meta: {
-      title: 'Home Page'
-    }
-  },
-  {
-    path: '/about',
-    component: () => import('@view/AboutPage.vue'),
-    name: 'about',
-    meta: {
-      title: 'Home Page'
-    }
-  },
-  {
-    path: '/news',
-    component: () => import('@view/NewsPage.vue'),
-    name: 'news',
-    meta: {
-      title: 'News Page'
-    }
-  },
-  {
-    path: '/contact',
-    component: () => import('@view/ContactPage.vue'),
-    name: 'contact',
-    meta: {
-      title: 'Contact Page'
-    }
+    path: "/:locale?",
+    component: RouterView,
+    beforeEnter: Trans.routeMiddleware,
+    children: [
+      {
+        path: '',
+        component: HomePage,
+        name: 'home'
+      },
+      {
+        path: 'about',
+        component: () => import('@view/AboutPage.vue'),
+        name: 'about'
+      },
+      {
+        path: 'news',
+        component: () => import('@view/NewsPage.vue'),
+        name: 'news'
+      },
+      {
+        path: 'contact',
+        component: () => import('@view/ContactPage.vue'),
+        name: 'contact'
+      }
+    ]
   }
 ]
 
 const router = createRouter({
   history: createWebHashHistory(),
   routes
-})
-
-router.afterEach((to, from) => {
-  const _baseTitle = "Totoro Homestay"
-  document.title = (to.meta.title) ? `${_baseTitle} | ${to.meta.title}` : _baseTitle;
 })
 
 export default router

@@ -1,0 +1,29 @@
+{
+  "title": {
+    "home": "ホームページ",
+    "about": "ページについて",
+    "news": "ニュースページ",
+    "contact": "お問い合わせページ"
+  },
+  "nav": {
+    "about": "だいたい",
+    "news": "ニュース",
+    "contact": "コンタクト",
+    "login": "ログイン",
+    "register": "登録"
+  },
+    "locale": {
+    "en": {
+      "lang": "英語",
+      "short": "EN"
+    },
+    "vn": {
+      "lang": "ベトナム語",
+      "short": "VN"
+    },
+    "ja": {
+      "lang": "日本語",
+      "short": "JP"
+    }
+  }
+}
