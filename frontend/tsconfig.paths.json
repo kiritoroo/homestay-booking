@@ -8,6 +8,7 @@
       "@view/*": ["src/views/*"],
       "@asset/*": ["src/assets/*"],
       "@style/*": ["src/styles/*"],
+      "@type/*": ["src/types/*"]
     }
   }
 }
