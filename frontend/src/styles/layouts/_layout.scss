@@ -1,0 +1,19 @@
+#app {
+  display: grid;
+  grid-template-areas: 
+    'navbar navbar'
+    'content content';
+
+  grid-template-columns: 100vw;
+  grid-template-rows: $height-nav calc(100vh - $height-nav);
+
+  #navbar {
+    grid-area: navbar;
+  }
+
+  #content {
+    grid-area: content;
+    height: 100%;
+    overflow-y: auto;
+  }
+}

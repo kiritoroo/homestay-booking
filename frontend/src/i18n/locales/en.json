@@ -12,6 +12,18 @@
     "login": "Login",
     "register": "Register"
   },
+  "login": {
+    "welcome": "Welcome to",
+    "google": "Sign in with Google",
+    "apple": "Sign in with Apple Id",
+    "or": "or",
+    "username": "Email or Username",
+    "password": "Password",
+    "forgot": "Forgot Password?",
+    "signin": "Sign in",
+    "signup1": "Don't have account?",
+    "signup2": "Sign up"
+  },
   "locale": {
     "en": {
       "lang": "English",

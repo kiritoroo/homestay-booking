@@ -15,7 +15,7 @@
     "declaration": true,
     "declarationMap": true,
     "declarationDir": "src/types/*",
-    "types": ["vite/client", "@types/node"]
+    "types": ["vite/client", "@types/node", "vuetify"]
   },
   "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue", "src/env.d.ts"],
   "extends": "./tsconfig.paths.json",

@@ -202,5 +202,18 @@
     }
   }
 
+  .modal_show_eff {
+    &-enter-active, &-leave-active {
+      transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+    }
 
+    &-enter-from, &-leave-to {
+      opacity: 0;
+    }
+
+    &-enter-to, &-leave-from {
+      opacity: 1;
+    }
+
+  }
 }

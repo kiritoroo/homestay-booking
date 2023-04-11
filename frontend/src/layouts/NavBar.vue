@@ -38,7 +38,7 @@
     <section>
       <div class="user">
         <div class="account">
-          <button class="account_login">
+          <button class="account_login" @click="showModal = true">
             {{ $t("nav.login") }}
           </button>
           <button class="account_register">
@@ -47,11 +47,19 @@
         </div>
         <DropdownLang />
       </div>
+
+      <Transition name="modal_show_eff">
+        <ModalLogin v-show="showModal" @close="showModal = false"/>
+      </Transition>
     </section>
   </header>
 </template>
 
 <script setup lang="ts">
+import { ref } from 'vue'
 import Trans from '@i18n/translation'
 import DropdownLang from '@comp/DropdownLang.vue'
+import ModalLogin from '@/components/ModalLogin.vue'
+
+const showModal = ref(false)
 </script>

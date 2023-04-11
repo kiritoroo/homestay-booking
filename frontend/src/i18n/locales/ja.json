@@ -12,7 +12,19 @@
     "login": "ログイン",
     "register": "登録"
   },
-    "locale": {
+  "login": {
+    "welcome": "へようこそ",
+    "google": "Google でログイン",
+    "apple": "Apple IDでサインイン",
+    "or": "また",
+    "username": "メールアドレスまたはユーザ名",
+    "password": "パスワード",
+    "forgot": "パスワードをお忘れですか？",
+    "signin": "ログイン",
+    "signup1": "アカウントを持っていませんか？",
+    "signup2": "サインアップ"
+  },
+  "locale": {
     "en": {
       "lang": "英語",
       "short": "EN"

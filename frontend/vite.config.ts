@@ -17,7 +17,8 @@ export default defineConfig({
       '@asset': fileURLToPath(new URL('./src/assets', import.meta.url)),
       '@style': fileURLToPath(new URL('./src/styles', import.meta.url)),
       '@type': fileURLToPath(new URL('./src/types', import.meta.url)),
-      '@i18n': fileURLToPath(new URL('./src/i18n', import.meta.url))
+      '@i18n': fileURLToPath(new URL('./src/i18n', import.meta.url)),
+      '@plugin': fileURLToPath(new URL('./src/plugins', import.meta.url))
     }
   },
   plugins: [

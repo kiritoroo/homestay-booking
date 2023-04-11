@@ -1,8 +1,14 @@
+@import './utils/variables';
+
 @import './base/app';
 @import './base/reset';
 
 @import './fonts/poppins';
 
 @import './layouts/narbar';
+@import './layouts/layout';
 
 @import './components/dropdownlang';
+@import './components/modallogin';
+
+@import './views/homepage';

@@ -1,0 +1,255 @@
+.modal-login {
+  .modal {
+    .modal-mask {
+      position: fixed;
+      z-index: 9999;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(100, 100, 100, .2);
+      display: block;
+      
+      .modal-wrapper {
+        position: relative;
+        width: 500px;
+        height: 600px;
+        margin: 150px auto;
+        padding: 20px 30px;
+        border-radius: 15px;
+        background-color: #fff;
+
+        .btn-close {
+          position: absolute;
+          top: 3%;
+          right: 3%;
+          transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+
+          &:hover {
+            transform: scale(1.2);
+            cursor: pointer;
+          }
+          &:active {
+            transform: scale(0.9);
+          }
+        }
+
+        .modal-container {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          margin: 19px 10px 20px 10px;
+          gap: 5px;
+
+          .welcome {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+            font-size: 18px;
+            padding-bottom: 25px;
+
+            .name {
+              letter-spacing: 2px;
+
+              span:nth-child(-n+3) {
+                display: inline-block;
+                font-size: 20px;
+                font-weight: 700;
+              }
+            
+              span:nth-child(1) {
+                color: #1391D2;
+              }
+            
+              span:nth-child(2) {
+                color: #FC9E15;
+              }
+            
+              span:nth-child(3) {
+                color: #E3403D;
+              }
+            }
+
+            .inc {
+              color: #262320;
+              font-size: 18px;
+              font-weight: 500;
+            }
+          }
+
+          .login-option {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+
+            .login-google, .login-apple {
+              font-size: 15px;
+              color: #262320;
+              font-weight: 500;
+              padding: 10px 10px 10px 40px;
+              display: block;
+              width: 320px;
+              border: none;
+              border: 2px solid #e2e2e2;
+              border-radius: 10px;
+              text-align: start;
+              display: flex;
+              flex-direction: row;
+              align-items: center;
+              transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+
+              img {
+                width: 25px;
+                height: 25px;
+                margin: 5px 10px 5px 10px;
+              }
+
+              &:hover {
+                background-color: #fff2fe;
+              }
+              &:active {
+                transform: scale(0.9);
+              }
+            }
+          }
+
+          .input-group {
+            position:relative; 
+            margin-bottom: 20px; 
+
+            input {
+              font-size: 15px;
+              padding: 13px 10px 13px 40px;
+              display: block;
+              width: 320px;
+              border: none;
+              border: 2px solid #e2e2e2;
+              border-radius: 10px;
+
+              &:focus {
+                outline: none;
+                border-color: #DE97D8;
+              }
+
+              &:focus ~ .hint label, &:valid ~ .hint label {
+                top:-20px;
+                left: 13px;
+                font-size:12px;
+                color:#DE97D8;
+              }
+            }
+
+            .hint {
+              .icon {
+                color: #e0e0e0; 
+                font-weight: normal;
+                position: absolute;
+                pointer-events: none;
+                left: 10px;
+                top: 13px;
+                transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+              }
+
+              label {
+                color: #e0e0e0; 
+                font-size: 15px;
+                font-weight: normal;
+                position: absolute;
+                pointer-events: none;
+                left: 45px;
+                top: 15px;
+                transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+              }
+            }
+          }
+
+          .divide {
+            position: relative;
+            display: block;
+            width: 320px;
+            text-align: center;
+            margin: 15px auto;
+                        
+            &::before, &::after {
+              content:'';
+              position:absolute;
+              height: 1.5px; 
+              width: 42%;
+              bottom: 10px; 
+              background:#e2e2e2; 
+            }
+            &::before {
+              left: 0%;
+            }
+            &::after {
+              right: 0%;
+            }
+          }
+
+          .forgot {
+            position: relative;
+            display: block;
+            font-size: 12px;
+            text-align: center;
+            width: 320px;
+            top: -15px;
+            right: -18%;
+          
+            transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+
+            &:hover {
+              transform: scale(1.1);
+              cursor: pointer;
+            }
+            &:active {
+              transform: scale(0.9);
+            }
+          }
+
+          .btn-signin {
+            width: 320px;
+            padding: 12px 20px 12px 20px;
+            margin-top: 10px;
+            background-color: #DE97D8;
+            border-radius: 10px;
+            color: white;
+            transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+
+            &:hover {
+              transform: scale(1.01);
+              cursor: pointer;
+            }
+            &:active {
+              transform: scale(0.9);
+            }
+          }
+
+          .signup {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            font-size: 14px;
+            padding: 10px 0;
+
+            .link {
+              font-weight: 500;
+              transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+
+              &:hover {
+                transform: scale(1.1);
+                cursor: pointer;
+              }
+              &:active {
+                transform: scale(0.9);
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+}

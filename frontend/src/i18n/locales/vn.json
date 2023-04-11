@@ -12,6 +12,18 @@
     "login": "Đăng nhập",
     "register": "Đăng ký"
   },
+  "login": {
+    "welcome": "Chào mừng đến với",
+    "google": "Đăng nhập bằng Google",
+    "apple": "Đăng nhập bằng Apple Id",
+    "or": "hoặc",
+    "username": "Email hoặc Tên người dùng",
+    "password": "Mật khẩu",
+    "forgot": "Quên mật khẩu?",
+    "signin": "Đăng nhập",
+    "signup1": "Chưa có tài khoản?",
+    "signup2": "Đăng ký"
+  },
   "locale": {
     "en": {
       "lang": "Tiếng Anh",
