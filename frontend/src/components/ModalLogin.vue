@@ -3,7 +3,7 @@
     <div class="modal">
       <div class="modal-mask">
         <div class="modal-wrapper">
-          <div class="btn-close" @click="$emit('close')">
+          <div class="btn-close" @click="$emit('closeModal')">
             <v-icon icon="mdi-close" medium dark></v-icon>
           </div>
 
@@ -70,7 +70,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useStore } from 'vuex'
-import IUserRequest from '@type/IUserRequest'
+import ILoginRequest from '@/types/ILoginRequest'
 
 const store = useStore()
 
@@ -80,7 +80,7 @@ const userData = ref({
 })
 
 const logIn = async () => {
-  const userRequest: IUserRequest = {
+  const userRequest: ILoginRequest = {
     username: userData.value.username,
     password: userData.value.password
   }

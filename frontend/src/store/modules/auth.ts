@@ -1,6 +1,6 @@
 import axios from '@util/axiosInstance'
-import IUserRequest from '@type/IUserRequest'
-import IUserResponse from '@type/IUserResponse'
+import ILoginRequest from '@/types/ILoginRequest'
+import ILoginResponse from '@/types/ILoginResponse'
 import IUser from '@type/IUser'
 
 interface IState {
@@ -12,7 +12,7 @@ const state: IState = {
 }
 
 const getters = {
-  isAuthenticated: (state: any) => !!state.user,    
+  isAuthenticated: (state: any) => !!state.user,
   StateUser: (state: any) => state.user,
 };
 
@@ -24,12 +24,12 @@ const actions = {
     UserForm.append('password', form.password)
     await dispatch('LogIn', UserForm)
   },
-  async logIn({commit}: any, userRequest: IUserRequest) {
+  async logIn({commit}: any, userRequest: ILoginRequest) {
     await axios.post('login', {
       username: userRequest.username,
       password: userRequest.password
     }).then(response => {
-      const userResponse: IUserResponse = response.data;
+      const userResponse: ILoginResponse = response.data;
       document.cookie = `
         access_token=${userResponse.access_token}; 
         expires=${new Date(userResponse.access_token_expires_at).toUTCString()}; 

@@ -49,7 +49,7 @@
       </div>
 
       <Transition name="modal_show_eff">
-        <ModalLogin v-show="showModal" @close="showModal = false"/>
+        <ModalLogin v-show="showModal" @closeModal="showModal = false"/>
       </Transition>
     </section>
   </header>
