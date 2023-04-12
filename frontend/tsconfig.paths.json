@@ -10,7 +10,9 @@
       "@style/*": ["src/styles/*"],
       "@type/*": ["src/types/*"],
       "@i18n/*": ["src/i18n/*"],
-      "@plugin/*": ["src/plugins/*"]
+      "@plugin/*": ["src/plugins/*"],
+      "@store/*": ["src/store/*"],
+      "@util/*": ["src/utils/*"]
     }
   }
 }

@@ -32,25 +32,27 @@
 
             <div class="divide">{{$t("login.or") }}</div>
 
-            <div class="input-group">
-              <input type="text" required>
-              <div class="hint">
-                <v-icon class="icon" icon="mdi-account-circle"></v-icon>
-                <label>{{$t("login.username") }}</label>
+            <form @submit.prevent="logIn" class="login-form">
+              <div class="input-group">
+                <input v-model="userData.username" type="text" required>
+                <div class="hint">
+                  <v-icon class="icon" icon="mdi-account-circle"></v-icon>
+                  <label>{{$t("login.username") }}</label>
+                </div>
               </div>
-            </div>
 
-            <div class="input-group">
-              <input type="text" required>
-              <div class="hint">
-                <v-icon class="icon" icon="mdi-lock"></v-icon>
-                <label>{{$t("login.password") }}</label>
+              <div class="input-group">
+                <input v-model="userData.password" type="text" required>
+                <div class="hint">
+                  <v-icon class="icon" icon="mdi-lock"></v-icon>
+                  <label>{{$t("login.password") }}</label>
+                </div>
               </div>
-            </div>
+            </form>
 
             <div class="forgot">{{$t("login.forgot") }}</div>
 
-            <button type="button" class="btn-signin">
+            <button @click="logIn" type="button" class="btn-signin">
               {{$t("login.signin") }}
             </button>
 
@@ -66,5 +68,23 @@
 </template>
 
 <script setup lang="ts">
+import { ref } from 'vue'
+import { useStore } from 'vuex'
+import IUserRequest from '@type/IUserRequest'
+
+const store = useStore()
+
+const userData = ref({
+  username: '',
+  password: ''
+})
+
+const logIn = async () => {
+  const userRequest: IUserRequest = {
+    username: userData.value.username,
+    password: userData.value.password
+  }
+  await store.dispatch('logIn', userRequest)
+}
 
 </script>

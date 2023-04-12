@@ -8,6 +8,21 @@ import stylelint from 'vite-plugin-stylelint'
 import vueI18nPlugin from '@intlify/vite-plugin-vue-i18n'
 
 export default defineConfig({
+  server: {
+    proxy: {
+      '/api': {
+        target: 'http://172.16.31.37:8080',
+        changeOrigin: true,
+        secure: false,
+        rewrite: (path) => { console.log(path); return path.replace('/^\/api/', '') }
+      },
+      '/static': {
+        target: 'http://127.0.0.1:8080',
+        changeOrigin: true,
+        secure: false
+      }
+    }
+  },
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url)),
@@ -18,7 +33,9 @@ export default defineConfig({
       '@style': fileURLToPath(new URL('./src/styles', import.meta.url)),
       '@type': fileURLToPath(new URL('./src/types', import.meta.url)),
       '@i18n': fileURLToPath(new URL('./src/i18n', import.meta.url)),
-      '@plugin': fileURLToPath(new URL('./src/plugins', import.meta.url))
+      '@plugin': fileURLToPath(new URL('./src/plugins', import.meta.url)),
+      '@store': fileURLToPath(new URL('./src/store', import.meta.url)),
+      '@util': fileURLToPath(new URL('./src/utils', import.meta.url))
     }
   },
   plugins: [

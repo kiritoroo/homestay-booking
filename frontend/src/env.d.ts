@@ -1,4 +1,6 @@
 /// <reference types="vite/client" />
+import { ComponentCustomProperties } from 'vue'
+import { Store } from 'vuex'
 
 declare module '*.vue' {
   import { DefineComponent } from 'vue'
@@ -14,4 +16,14 @@ interface ImportMetaEnv {
 
 interface ImportMeta {
   readonly env: ImportMetaEnv
+}
+
+declare module '@vue/runtime-core' {
+  interface State {
+    user: string
+  }
+
+  interface ComponentCustomProperties {
+    $store: Store<State>
+  }
 }
