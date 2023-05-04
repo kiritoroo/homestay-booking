@@ -171,8 +171,8 @@
       &_login {
         border: none;
         background: none;
-        border: solid 2px #FFFFFF;
-        border-radius: 20px;
+        border: solid 1px #FFFFFF;
+        border-radius: 10px;
         transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
   
         &:hover {
@@ -186,8 +186,24 @@
   
       &_register {
         background: none;
-        border: solid 2px #E9E9E9;
-        border-radius: 20px;
+        border: solid 1px #E9E9E9;
+        border-radius: 10px;
+        transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+  
+        &:hover {
+          background: #f9e2ff;
+          border-color: #f9e2ff;
+          transform: scale(1.1);
+        }
+        &:active {
+          transform: scale(0.9);
+        }
+      }
+
+      &_logout {
+        background: none;
+        border: solid 1px #E9E9E9;
+        border-radius: 10px;
         transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
   
         &:hover {

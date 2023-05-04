@@ -38,28 +38,70 @@
     <section>
       <div class="user">
         <div class="account">
-          <button class="account_login" @click="showModal = true">
+          <button v-show="!stateUser" class="account_login" @click="handleShowModalLogin">
             {{ $t("nav.login") }}
           </button>
-          <button class="account_register">
+          <button v-show="!stateUser" class="account_register">
             {{ $t("nav.register") }}
+          </button>
+
+          <button v-show="stateUser" @click="handlelogOut" class="account_logout">
+            Log Out
           </button>
         </div>
         <DropdownLang />
       </div>
 
       <Transition name="modal_show_eff">
-        <ModalLogin v-show="showModal" @closeModal="showModal = false"/>
+        <ModalLogin v-show="showModalLogin && !stateUser" @closeModal="handleHideModalLogin" @openModalFogot="handleShowModalForgot"/>
+      </Transition>
+
+      <Transition name="modal_show_eff">
+        <ModalForgotPassword v-show="showModalForgotPassword" @closeModal="handleHideModalForgot"/>
       </Transition>
     </section>
   </header>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { computed, ref, watch } from 'vue'
 import Trans from '@i18n/translation'
 import DropdownLang from '@comp/DropdownLang.vue'
 import ModalLogin from '@/components/ModalLogin.vue'
+import ModalForgotPassword from '@/components/ModalForgotPassword.vue'
+import { useStore } from 'vuex'
 
-const showModal = ref(false)
+const store = useStore()
+const stateUser = computed(() => store.getters.stateUser)
+
+const showModalLogin = ref(false)
+const showModalForgotPassword = ref(false)
+
+const handleShowModalLogin = () => {
+  showModalLogin.value = true
+}
+
+const handleHideModalLogin = () => {
+  showModalLogin.value = false
+}
+
+const handleShowModalForgot = () => {
+  showModalLogin.value = false
+  showModalForgotPassword.value = true
+}
+
+const handleHideModalForgot = () => {
+  showModalForgotPassword.value = false
+}
+
+const handlelogOut = async () => {
+  await store.dispatch('logOut')
+}
+
+watch(
+  () => stateUser.value, () => {
+    if (stateUser.value) showModalLogin.value = false
+  }
+)
+
 </script>

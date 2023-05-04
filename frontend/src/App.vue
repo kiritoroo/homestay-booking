@@ -16,7 +16,15 @@
 import Navbar from '@layout/NavBar.vue'
 import router from './router'
 import { useI18n } from 'vue-i18n'
+import { useStore } from 'vuex'
+import { onMounted } from 'vue'
+
+const store = useStore()
 const { t } = useI18n()
+
+onMounted(async () => {
+  await store.dispatch('checkAuth')
+})
 
 router.afterEach((to) => {
   const _baseTitle = 'Totoro'

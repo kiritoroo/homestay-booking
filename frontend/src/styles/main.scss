@@ -2,6 +2,7 @@
 
 @import './base/app';
 @import './base/reset';
+@import './base/variables';
 
 @import './fonts/poppins';
 
@@ -10,5 +11,7 @@
 
 @import './components/dropdownlang';
 @import './components/modallogin';
+@import './components/canvas3d';
+@import './components/modelforgotpassword';
 
 @import './views/homepage';

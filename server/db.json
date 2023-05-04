@@ -1,0 +1,14 @@
+{
+  "users": [
+    { 
+      "id": 1, 
+      "username": "kiritoro",
+      "email": "kiritoro@yahoo.com",
+      "full_name": "Le Kien Trung",
+      "phone": "012345",
+      "password": "123",
+      "created_at": "2024-05-10",
+      "password_changed_at": "2024-05-10"
+    }
+  ]
+}

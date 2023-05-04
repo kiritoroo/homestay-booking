@@ -1,0 +1,12 @@
+{
+  "scripts": {
+    "server": "nodemon server.js"
+  },
+  "dependencies": {
+    "dotenv": "^16.0.3",
+    "json-server": "^0.17.3",
+    "json-server-auth": "^2.1.0",
+    "jsonwebtoken": "^9.0.0",
+    "nodemon": "^2.0.22"
+  }
+}
