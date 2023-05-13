@@ -14,7 +14,6 @@ export const StyledFieldInfo = styled.div`
   justify-content: center;
 `
 
-
 export const StyledFieldLabel = styled.div`
   font-weight: 400;
   line-height: 30px;

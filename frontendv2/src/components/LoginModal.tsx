@@ -69,6 +69,7 @@ export const LoginModal = (props: Props) => {
         userActions.login(userLoginRequest)
           .then(() => {
             setLoginSuccess(true);
+            window.location.reload();
           })
           .catch((error) => {
             setLoginFailed(true);

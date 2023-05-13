@@ -25,7 +25,7 @@ export const UserDropdown = (props: Props) => {
 
   const handleLogoutMouseClick = useCallback(() => {
     userActions.logout();
-    setIsShowLoginModal(true);
+    window.location.reload();
   }, [])
 
   const handleAccountMouseClick = useCallback(() => {

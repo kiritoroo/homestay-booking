@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useMemo } from 'react';
+import React, { useState, useCallback, useMemo, useEffect } from 'react';
 import { IHomestaySchema } from '@store/homestay/homestay.schema';
 import { MdNavigateNext, MdNavigateBefore } from 'react-icons/md';
 import * as S from '@style/comp/HomestayCard.styled';
@@ -6,6 +6,9 @@ import * as M from '@motion/HomestayCard.motion';
 import { AnimatePresence } from 'framer-motion';
 import { BiDollar } from "react-icons/bi";
 import { BsStarFill, BsFillHeartFill } from "react-icons/bs";
+import { useNavigate } from 'react-router-dom';
+import Skeleton, { SkeletonTheme } from 'react-loading-skeleton';
+import { useSetRecoilState } from 'recoil';
 
 interface Props {
   homestay: IHomestaySchema
@@ -13,7 +16,9 @@ interface Props {
 
 export const HomestayCard = (props: Props) => {
   const { homestay } = props;
+  const navigate = useNavigate();
 
+  const [isSkeleton, setIsSkeleton] = useState(true);
   const [isShowImageControl, setIsShowImageControl] = useState(false);
   const images = useMemo<string[]>(() => [
     homestay.main_image,
@@ -37,6 +42,10 @@ export const HomestayCard = (props: Props) => {
     setIsShowImageControl(false);
   }, [])
 
+  const handleMouseClick = useCallback(() => {
+    window.open(`/homestay/${homestay.id}`, '_blank')
+  }, [])
+
   const handleBeforeButtonClick = useCallback(() => {
     setCurrImageIndex((prev) => (prev - 1) );
   }, [])
@@ -45,62 +54,80 @@ export const HomestayCard = (props: Props) => {
     setCurrImageIndex((prev) => (prev + 1))
   ], [])
 
+  useEffect(() => {
+    setTimeout(() => {
+      setIsSkeleton(false);
+    }, ((500)));
+  }, [])
+
   return (
     <S.StyledContainer
       onMouseEnter={ handleMouseEnter }
       onMouseLeave={ handleMouseLeave }>
-      <S.StyledImageWrapper>
-        <S.StyledImageList
-          imageIndex={ currImageIndex }>
-          { images.map((url, index) => (
-            <S.StyledImage key={ index } src={ url }/>
-          )) }
-        </S.StyledImageList>
 
-        <S.StyledHeartWrapper>
-          <BsFillHeartFill size={"15px"} color={"#7D97B8"}/>
-        </S.StyledHeartWrapper>
+      { isSkeleton ? (
+      <S.StyledContainer>
+        <SkeletonTheme baseColor="#f2f7fc" highlightColor="#f8fbfd">
+          <Skeleton count={1} width={"28vw"} height={"25vw"}/>
+          <Skeleton count={1} inline width={250} height={20}/>
+          <Skeleton count={1} width={100} height={20} style={{ marginLeft: 10 }}/>
+          <Skeleton count={1} width={200} height={30}/>
+        </SkeletonTheme>
+      </S.StyledContainer> ) : (
+      <React.Fragment>
+        <S.StyledImageWrapper>
+          <S.StyledImageList
+            imageIndex={ currImageIndex }
+            onClick={ handleMouseClick }>
+            { images.map((url, index) => (
+              <S.StyledImage key={ index } src={ url }/>
+            )) }
+          </S.StyledImageList>
+
+          <S.StyledHeartWrapper>
+            <BsFillHeartFill size={"15px"} color={"#7D97B8"}/>
+          </S.StyledHeartWrapper>
+          
+          <AnimatePresence>
+          { isShowImageControl &&
+            <React.Fragment>
+              { currImageIndex > 0 &&
+                <M.MotionBeforeButton
+                  onClick={ handleBeforeButtonClick }>
+                  <MdNavigateBefore size={"25px"} color={"#525252"}/>
+                </M.MotionBeforeButton> }
+
+              { currImageIndex < (maxImageIndex - 1) &&
+                <M.MotionNextButton
+                  onClick={ handleNextButtonClick }>
+                  <MdNavigateNext size={"25px"} color={"#525252"}/>
+                </M.MotionNextButton> }
+            </React.Fragment> }
+          </AnimatePresence>
+
+          <S.StyledDotIndexWrapper>
+            { Array.from({ length: maxImageIndex}, (_, index: number) => (
+              <S.StyledDotIndex
+                key={ index }
+                isCurrIndex={ currImageIndex == index }/>
+            )) }
+          </S.StyledDotIndexWrapper>
+          
+          <S.StyledGradientBottom/>
+        </S.StyledImageWrapper>
         
-        <AnimatePresence>
-        { isShowImageControl &&
-          <React.Fragment>
-            { currImageIndex > 0 &&
-              <M.MotionBeforeButton
-                onClick={ handleBeforeButtonClick }>
-                <MdNavigateBefore size={"25px"} color={"#525252"}/>
-              </M.MotionBeforeButton> }
-
-            { currImageIndex < (maxImageIndex - 1) &&
-              <M.MotionNextButton
-                onClick={ handleNextButtonClick }>
-                <MdNavigateNext size={"25px"} color={"#525252"}/>
-              </M.MotionNextButton> }
-          </React.Fragment> }
-        </AnimatePresence>
-
-        <S.StyledDotIndexWrapper>
-          { Array.from({ length: maxImageIndex}, (_, index: number) => (
-            <S.StyledDotIndex
-              key={ index }
-              isCurrIndex={ currImageIndex == index }/>
-          )) }
-        </S.StyledDotIndexWrapper>
-        
-        <S.StyledGradientBottom/>
-      </S.StyledImageWrapper>
-      
-      <S.StyledFirstInfoWrapper>
-        <S.StyledCity>{ cityName }</S.StyledCity>
-      
-      <S.StyledRatingWrapper>
-        <BsStarFill color="#7D97B8"/> 
-        <S.StyledRating>5,0</S.StyledRating>
-      </S.StyledRatingWrapper>
-      </S.StyledFirstInfoWrapper>
-      <S.StyledPriceWrapper>
-        <BiDollar size={"18px"} color="#252525"/>
-        <S.StyledPrice>{ homestay.price }</S.StyledPrice> &nbsp;/ đêm
-      </S.StyledPriceWrapper>
+        <S.StyledFirstInfoWrapper onClick={ handleMouseClick }>
+          <S.StyledCity>{ cityName }</S.StyledCity>
+          <S.StyledRatingWrapper onClick={ handleMouseClick }>
+            <BsStarFill color="#7D97B8"/> 
+            <S.StyledRating>5,0</S.StyledRating>
+          </S.StyledRatingWrapper>
+        </S.StyledFirstInfoWrapper>
+        <S.StyledPriceWrapper onClick={ handleMouseClick }>
+          <BiDollar size={"18px"} color="#252525"/>
+          <S.StyledPrice>{ homestay.price }</S.StyledPrice> &nbsp;/ đêm
+        </S.StyledPriceWrapper>
+      </React.Fragment> ) }
     </S.StyledContainer>
   )
 }

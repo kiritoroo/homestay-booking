@@ -9,7 +9,7 @@ import { homestaysSelector } from '@store/homestay/homestay.selectors';
 interface Props {}
 
 export const HomestayList = (props: Props) => {
-  const homestayAction = useHomestayActions();
+  const homestayActions = useHomestayActions();
   const homestays = useRecoilValue(homestaysSelector);
 
   const homestayGetAllRequestParams = useMemo<IHomestayGetAllRequestParams> (() => ({
@@ -18,7 +18,7 @@ export const HomestayList = (props: Props) => {
   }), [])
 
   useLayoutEffect(() => {
-    homestayAction.getAll(homestayGetAllRequestParams)
+    homestayActions.getAll(homestayGetAllRequestParams)
   }, [])
 
   const createHomestayList = useCallback((data: IHomestaySchema[]) => {
