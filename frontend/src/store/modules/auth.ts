@@ -2,6 +2,7 @@ import axios from '@util/axiosInstance'
 import ILoginRequest from '@/types/ILoginRequest'
 import ILoginResponse from '@/types/ILoginResponse'
 import IUser from '@type/IUser'
+import { useAttrs } from 'vue'
 
 interface IState {
   user: IUser | null
@@ -22,9 +23,9 @@ const getters = {
 const actions = {
   async checkAuth ({ commit }: any) {
     const cookie = document.cookie.match('(^|;)\\s*access_token\\s*=\\s*([^;]+)')?.pop() || ''
+    console.log(cookie)
     if (cookie) {
       // const token = cookie.split('=')[1]
-      console.log(cookie)
       try {
         const response = await axios.get('me', {
           headers: {
