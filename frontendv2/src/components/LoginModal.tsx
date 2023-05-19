@@ -8,6 +8,7 @@ import { HiExclamationCircle } from 'react-icons/hi';
 import { BsFillCheckCircleFill } from 'react-icons/bs';
 import * as S from '@style/comp/LoginModal.styled';
 import * as M from '@motion/LoginModal.motion';
+import { Loading } from './Loading';
 
 interface Props {}
 
@@ -16,11 +17,12 @@ export const LoginModal = (props: Props) => {
 
   const containerRef = useRef<HTMLDivElement>(null);
   const modalRef = useRef<HTMLDivElement>(null);
-  const usernameRef = useRef<HTMLInputElement>(null);
-  const passwordRef = useRef<HTMLInputElement>(null);
+  const usernameInputRef = useRef<HTMLInputElement>(null);
+  const passwordInputRef = useRef<HTMLInputElement>(null);
 
   const [isShowLoginModal, setIsShowLoginModal] = useRecoilState(isShowLoginModalAtom);
   const setIsShowRegisterModal = useSetRecoilState(isShowRegisterModalAtom);
+  const [loginPending, setLoginPending] = useState(false);
   const [loginFailed, setLoginFailed] = useState(false);
   const [loginSuccess, setLoginSuccess] = useState(false);
   
@@ -28,55 +30,100 @@ export const LoginModal = (props: Props) => {
     username: '',
     password: ''
   });
-  const [isInputsEmpty, setIsInputsEmpty] = useState({ 
+  const [isInputsError, setIsInputsError] = useState({ 
     username: false, 
     password: false 
   });
-  const inputEmptyHint = useRef({
-    username: 'Cần nhập tên người dùng',
-    password: 'Cần nhập mật khẩu'
+  const [inputsErrorHint, setInputsErrorHint] = useState({
+    username: '',
+    password: ''
   });
 
   const handleInputChange = useCallback((event: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
+    setLoginFailed(false)
     setUserLoginRequest((prevRequest) => ({
       ...prevRequest,
       [name]: value
     }));
 
-    setIsInputsEmpty((prevErrors) => ({
+    setIsInputsError((prevErrors) => ({
       ...prevErrors,
       [name]: false
     }));
   }, [])
 
-  const handleLoginSubmit = useCallback(() => {
-    setLoginFailed(false)
-    if (usernameRef.current && passwordRef.current) {
+  const checkInputUsername = useCallback(() => {
+    if (usernameInputRef.current) {
       if (!userLoginRequest.username) {
-        setIsInputsEmpty((prevErrors) => ({
+        setIsInputsError((prevErrors) => ({
           ...prevErrors,
           username: true,
         }));
-        usernameRef.current.focus();
-      } else if (!userLoginRequest.password) {
-        setIsInputsEmpty((prevErrors) => ({
+        setInputsErrorHint((prevHint) => ({
+          ...prevHint,
+          username: "Cần nhập tên người dùng!"
+        }))
+        usernameInputRef.current.focus();
+        return false
+      }
+    }
+    return true
+  }, [usernameInputRef.current, userLoginRequest])
+
+  const checkInputPassword = useCallback(() => {
+    if (passwordInputRef.current) {
+      if (!userLoginRequest.password) {
+        setIsInputsError((prevErrors) => ({
           ...prevErrors,
           password: true,
         }));
-        passwordRef.current.focus();
-      } else {
-        userActions.login(userLoginRequest)
-          .then(() => {
-            setLoginSuccess(true);
-            window.location.reload();
-          })
-          .catch((error) => {
-            setLoginFailed(true);
-          })
+        setInputsErrorHint((prevHint) => ({
+          ...prevHint,
+          password: "Cần nhập mật khẩu!"
+        }))
+        passwordInputRef.current.focus();
+        return false
+      }
+      if (userLoginRequest.password.length < 6) {
+        setIsInputsError((prevErrors) => ({
+          ...prevErrors,
+          password: true,
+        }));
+        setInputsErrorHint((prevHint) => ({
+          ...prevHint,
+          password: "Mật khẩu phải có độ dài lớn hơn 6 ký tự!"
+        }))
+        passwordInputRef.current.focus();
+        return false
       }
     }
-  }, [usernameRef.current, passwordRef.current, userLoginRequest])
+    return true
+  }, [passwordInputRef.current, userLoginRequest])
+
+  const handleLoginSubmit = useCallback(() => {
+    setLoginPending(true)
+    userActions.login(userLoginRequest)
+      .then(() => {
+        setTimeout(() => {
+          setLoginPending(false)
+          setLoginSuccess(true);
+          window.location.reload();
+        }, 200)
+      })
+      .catch((error) => {
+        setTimeout(() => {
+          setLoginPending(false)
+          setLoginFailed(true);
+        }, 200);
+      })
+  }, [userLoginRequest])
+
+  const handleButtonLoginMouseClick = useCallback(() => {
+    checkInputUsername()
+      && checkInputPassword()
+      && handleLoginSubmit()
+  }, [usernameInputRef.current, passwordInputRef.current, userLoginRequest])
 
   const handleContainerMouseClick = useCallback((event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     if (containerRef.current && modalRef.current) {
@@ -132,8 +179,8 @@ export const LoginModal = (props: Props) => {
                 <S.StyledForm>
                   <S.StyledInputWrapper>
                     <S.StyledInput
-                      ref={ usernameRef }
-                      isEmpty={ isInputsEmpty.username }
+                      ref={ usernameInputRef }
+                      isEmpty={ isInputsError.username }
                       required={true}
                       type='text'
                       name='username'
@@ -145,8 +192,8 @@ export const LoginModal = (props: Props) => {
                   <S.StyledLine/>
                   <S.StyledInputWrapper>
                     <S.StyledInput
-                      ref={ passwordRef }
-                      isEmpty={ isInputsEmpty.password }
+                      ref={ passwordInputRef }
+                      isEmpty={ isInputsError.password }
                       required={true}
                       type='password'
                       name='password'
@@ -158,18 +205,27 @@ export const LoginModal = (props: Props) => {
                 </S.StyledForm>
 
                 <S.StyledInputEmptyHintWrapper>
-                  {(isInputsEmpty.username || isInputsEmpty.password) && <HiExclamationCircle size={"20px"} color={"#C13515"}/> }
-                  { isInputsEmpty.username && <S.StyledInputEmptyHintLabel>{ inputEmptyHint.current.username }</S.StyledInputEmptyHintLabel> }
-                  { isInputsEmpty.password && <S.StyledInputEmptyHintLabel>{ inputEmptyHint.current.password }</S.StyledInputEmptyHintLabel> }
+                  {(isInputsError.username || isInputsError.password) && <HiExclamationCircle size={"20px"} color={"#C13515"}/> }
+                  { isInputsError.username && <S.StyledInputEmptyHintLabel>{ inputsErrorHint.username }</S.StyledInputEmptyHintLabel> }
+                  { isInputsError.password && <S.StyledInputEmptyHintLabel>{ inputsErrorHint.password }</S.StyledInputEmptyHintLabel> }
                 </S.StyledInputEmptyHintWrapper>
 
                 <S.StyledPolicyHint>Chính sách về quyền riêng tư</S.StyledPolicyHint>
 
-                <S.StyledButtonLogin
-                  tabIndex={3}
-                  onClick={handleLoginSubmit }>
-                  Đăng nhập
-                </S.StyledButtonLogin>
+                <S.StyledButtonLoginWrapper>
+                  {loginPending
+                    ? (
+                    <S.StylewdLoadingWrapper>
+                      <Loading size={10}/>
+                    </S.StylewdLoadingWrapper>)
+                    : (
+                    <S.StyledButtonLogin
+                      tabIndex={3}
+                      onClick={ handleButtonLoginMouseClick }>
+                      Đăng nhập
+                    </S.StyledButtonLogin>)}
+                </S.StyledButtonLoginWrapper>
+
 
                 <S.StyledRegisterHintWrapper>
                   <S.StyledRegisterHint>Bạn chưa có tài khoản? &nbsp;</S.StyledRegisterHint>

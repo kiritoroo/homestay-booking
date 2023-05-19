@@ -68,6 +68,16 @@ export const StyledWelcome = styled.div`
   margin-bottom: 30px;
 `
 
+export const StyledButtonLoginWrapper = styled.div`
+  position: relative;
+  width: 100%;
+`
+
+export const StylewdLoadingWrapper = styled.div`
+  padding-top: 20px;
+  padding-bottom: 20px;
+`
+
 export const StyledButtonLogin = styled.button`
   display: flex;
   width: 100%;
@@ -174,6 +184,7 @@ export const StyledLoginFailedAlert = styled.div`
   text-align: center;
   font-size: 15px;
   font-weight: 500;
+  margin-top: 10px;
 `
 
 export const StyledInputEmptyHintWrapper = styled.div`
