@@ -1,16 +1,15 @@
-import React, { useCallback, useLayoutEffect, useMemo } from 'react';
+import React, { useCallback, useLayoutEffect, useMemo, useState } from 'react';
 import * as S from '@style/comp/HomestayList.styled';
 import { HomestayCard } from './HomestayCard';
 import { useHomestayActions } from '@store/homestay/homestay.actions';
-import { IHomestayGetAllRequestParams, IHomestaySchema } from '@store/homestay/homestay.schema';
+import { IHomestayGetAllRequestParams, IHomestayGetAllResponse, IHomestaySchema } from '@store/homestay/homestay.schema';
 import { useRecoilValue } from 'recoil';
-import { homestaysSelector } from '@store/homestay/homestay.selectors';
 
 interface Props {}
 
 export const HomestayList = (props: Props) => {
   const homestayActions = useHomestayActions();
-  const homestays = useRecoilValue(homestaysSelector);
+  const [homestaysData, setHomestaysData] = useState<IHomestayGetAllResponse | null>(null);
 
   const homestayGetAllRequestParams = useMemo<IHomestayGetAllRequestParams> (() => ({
     page_id: 1,
@@ -19,6 +18,9 @@ export const HomestayList = (props: Props) => {
 
   useLayoutEffect(() => {
     homestayActions.getAll(homestayGetAllRequestParams)
+      .then((response: IHomestayGetAllResponse) => {
+        setHomestaysData(response)
+      })
   }, [])
 
   const createHomestayList = useCallback((data: IHomestaySchema[]) => {
@@ -29,9 +31,12 @@ export const HomestayList = (props: Props) => {
     ))
   }, [])
 
-  const renderedHomestayList = useMemo<JSX.Element[]>(() => {
-    return createHomestayList(homestays.data);
-  }, [homestays])
+  const renderedHomestayList = useMemo<JSX.Element[] | null>(() => {
+    if (homestaysData) {
+      return createHomestayList(homestaysData.homestays.map((item) => item.homestay))
+    }
+    return null
+  }, [homestaysData])
 
   return (
     <S.StyledContainer>

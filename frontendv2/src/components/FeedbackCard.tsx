@@ -1,10 +1,10 @@
-import { IHomestayFeedbackSchema } from '@store/homestay/homestay.schema';
+import { IFeedBackSchema } from '@store/feedback/feedback.schema';
 import React, { useCallback, useState } from 'react';
 import * as S from '@style/comp/FeedbackCard.styled';
 import { MdOutlineNavigateNext } from 'react-icons/md';
 
 interface Props {
-  feedback: IHomestayFeedbackSchema;
+  feedback: IFeedBackSchema;
 }
 
 export const FeedbackCard = (props: Props) => {

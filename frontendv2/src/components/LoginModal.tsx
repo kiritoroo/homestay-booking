@@ -23,8 +23,8 @@ export const LoginModal = (props: Props) => {
   const [isShowLoginModal, setIsShowLoginModal] = useRecoilState(isShowLoginModalAtom);
   const setIsShowRegisterModal = useSetRecoilState(isShowRegisterModalAtom);
   const [loginPending, setLoginPending] = useState(false);
-  const [loginFailed, setLoginFailed] = useState(false);
   const [loginSuccess, setLoginSuccess] = useState(false);
+  const [loginFailed, setLoginFailed] = useState(false);
   
   const [userLoginRequest, setUserLoginRequest] = useState<IUserLoginRequestBody>({
     username: '',
@@ -108,10 +108,13 @@ export const LoginModal = (props: Props) => {
         setTimeout(() => {
           setLoginPending(false)
           setLoginSuccess(true);
+          setTimeout(() => {
+            setIsShowLoginModal(false);
+          }, 300)
           window.location.reload();
         }, 200)
       })
-      .catch((error) => {
+      .catch(() => {
         setTimeout(() => {
           setLoginPending(false)
           setLoginFailed(true);
@@ -136,14 +139,6 @@ export const LoginModal = (props: Props) => {
   const handleIconCloseMouseClick = useCallback(() => {
     setIsShowLoginModal(false)
   }, [])
-
-  useEffect(() => {
-    if (loginSuccess) {
-      setTimeout(() => {
-        setIsShowLoginModal(false);
-      }, 300)
-    }
-  }, [loginSuccess])
 
   const handleRegisterLinkMouseClick = useCallback(() => {
     setIsShowLoginModal(false);
@@ -180,7 +175,7 @@ export const LoginModal = (props: Props) => {
                   <S.StyledInputWrapper>
                     <S.StyledInput
                       ref={ usernameInputRef }
-                      isEmpty={ isInputsError.username }
+                      isError={ isInputsError.username }
                       required={true}
                       type='text'
                       name='username'
@@ -193,7 +188,7 @@ export const LoginModal = (props: Props) => {
                   <S.StyledInputWrapper>
                     <S.StyledInput
                       ref={ passwordInputRef }
-                      isEmpty={ isInputsError.password }
+                      isError={ isInputsError.password }
                       required={true}
                       type='password'
                       name='password'
@@ -215,9 +210,9 @@ export const LoginModal = (props: Props) => {
                 <S.StyledButtonLoginWrapper>
                   {loginPending
                     ? (
-                    <S.StylewdLoadingWrapper>
+                    <S.StyledLoadingWrapper>
                       <Loading size={10}/>
-                    </S.StylewdLoadingWrapper>)
+                    </S.StyledLoadingWrapper>)
                     : (
                     <S.StyledButtonLogin
                       tabIndex={3}

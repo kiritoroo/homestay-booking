@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 export const StyledContainer = styled.div`
   position: sticky;
-  top: 0;
+  top: -2px;
   left: 0;
   width: 100%;
   height: 80px;

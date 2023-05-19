@@ -73,7 +73,7 @@ export const StyledButtonLoginWrapper = styled.div`
   width: 100%;
 `
 
-export const StylewdLoadingWrapper = styled.div`
+export const StyledLoadingWrapper = styled.div`
   padding-top: 20px;
   padding-bottom: 20px;
 `
@@ -127,7 +127,7 @@ export const StyledFormLabel = styled.label`
   transition: all 0.2s ease;
 `
 
-export const StyledInput = styled.input<{ isEmpty: boolean }>`
+export const StyledInput = styled.input<{ isError: boolean }>`
   width: 100%;
   padding-top: 30px;
   padding-bottom: 10px;
@@ -136,18 +136,18 @@ export const StyledInput = styled.input<{ isEmpty: boolean }>`
   border-radius: 10px;
   transition: border 0.5s ease;
   font-size: 16px;
-  background-color: ${({ isEmpty }) => (isEmpty ? '#FFF8F6' : '#FFFFFF')};
+  background-color: ${({ isError }) => (isError ? '#FFF8F6' : '#FFFFFF')};
 
   &:focus {
     outline: none;
     border: solid 1px #7D97B8;
-    border-color: ${({ isEmpty }) => (isEmpty ? '#C13515' : '#7D97B8')};
+    border-color: ${({ isError }) => (isError ? '#C13515' : '#7D97B8')};
   }
 
   &:focus + ${StyledFormLabel} {
     top: 15%;
     font-size: 12px;
-    color: ${({ isEmpty }) => (isEmpty ? '#C13515' : '#7D97B8')};
+    color: ${({ isError }) => (isError ? '#C13515' : '#7D97B8')};
   }
 
   &:valid + ${StyledFormLabel} {

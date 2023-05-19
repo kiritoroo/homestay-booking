@@ -1,3 +1,6 @@
+import { IFeedBackSchema } from "@store/feedback/feedback.schema";
+import { IUserSchema } from "@store/user/user.schema";
+
 export interface IHomestaySchema {
   id: number;
   description: string;
@@ -12,21 +15,17 @@ export interface IHomestaySchema {
   third_image: string;
 } 
 
-export interface IHomestayFeedbackSchema {
-  id: number;
-  user_comment: string;
-  homestay_commented: number;
-  rating: string;
-  commention: string;
-  created_at: string;
-}
-
 export interface IHomestayGetAllRequestParams {
   page_id: number;
   page_size: number;
 }
 
-export interface IHomestayGetFeedbackParams {
-  page_id: number;
-  page_size: number;
+export interface IHomestayGetAllResponse {
+  homestays: [{
+    homestay: IHomestaySchema,
+    list_of_feedbacks: [{
+      commentor: IUserSchema,
+      feedback: IFeedBackSchema
+    }]
+  }]
 }

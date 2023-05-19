@@ -76,6 +76,7 @@ export const StyledForm = styled.form`
 `
 
 export const StyledInputWrapper = styled.div`
+  width: 100%;
   position: relative;
   height: auto;
 `
@@ -92,27 +93,30 @@ export const StyledFormLabel = styled.label`
   transition: all 0.2s ease;
 `
 
-export const StyledInput = styled.input<{ isEmpty: boolean }>`
+export const StyledInput = styled.input<{ isError: boolean }>`
   width: 100%;
   padding-top: 30px;
   padding-bottom: 10px;
   padding-left: 20px;
   border: solid 1px #FFFFFF;
+  outline: none;
   border-radius: 10px;
   transition: border 0.5s ease;
   font-size: 16px;
-  background-color: ${({ isEmpty }) => (isEmpty ? '#FFF8F6' : '#FFFFFF')};
+  background-color: ${({ isError }) => (isError ? '#FFF8F6' : '#FFFFFF')};
+  z-index: 0;
 
   &:focus {
     outline: none;
     border: solid 1px #7D97B8;
-    border-color: ${({ isEmpty }) => (isEmpty ? '#C13515' : '#7D97B8')};
+    border-color: ${({ isError }) => (isError ? '#C13515' : '#7D97B8')};
+    z-index: 2;
   }
 
   &:focus + ${StyledFormLabel} {
     top: 15%;
     font-size: 12px;
-    color: ${({ isEmpty }) => (isEmpty ? '#C13515' : '#7D97B8')};
+    color: ${({ isError }) => (isError ? '#C13515' : '#7D97B8')};
   }
 
   &:valid + ${StyledFormLabel} {
@@ -123,7 +127,44 @@ export const StyledInput = styled.input<{ isEmpty: boolean }>`
 `
 
 export const StyledLine = styled.div`
+  position: relative;
   border-bottom: 1px solid #DDDDDD;
+  z-index: 1;
+`
+
+export const StyledInputPhoneWrapper = styled.div`
+  display: flex;
+  align-items: stretch;
+  justify-content: start;
+`
+
+export const StyledPhoneLocaleWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 0 10px;
+  border-right: 1px solid #DDDDDD;
+  user-select: none;
+`
+
+export const StyledPhoneLocaleIcon = styled.img`
+  width: 40px;
+  height: 30px;
+  object-fit: contain;
+`
+
+export const StyledPhoneLocaleValue = styled.div`
+  font-weight: 600;
+`
+
+export const StyledButtonRegisterWrapper = styled.div`
+  position: relative;
+  width: 100%;
+`
+
+export const StyledLoadingWrapper = styled.div`
+  padding-top: 20px;
+  padding-bottom: 20px;
 `
 
 export const StyledButtonRegister = styled.button`

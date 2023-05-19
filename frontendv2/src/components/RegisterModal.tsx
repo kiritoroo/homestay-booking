@@ -9,6 +9,7 @@ import { HiExclamationCircle } from 'react-icons/hi';
 import { useUserActions } from '@store/user/user.actions';
 import { MdOutlineNavigateNext } from 'react-icons/md';
 import { BsFillCheckCircleFill } from 'react-icons/bs';
+import { Loading } from './Loading';
 
 interface Props {}
 
@@ -17,19 +18,19 @@ export const RegisterModal = (props: Props) => {
 
   const containerRef = useRef<HTMLDivElement>(null);
   const modalRef = useRef<HTMLDivElement>(null);
-  const usernameRef = useRef<HTMLInputElement>(null);
-  const fullnameRef = useRef<HTMLInputElement>(null);
-  const emailRef = useRef<HTMLInputElement>(null);
-  const phoneRef = useRef<HTMLInputElement>(null);
-  const passwordRef = useRef<HTMLInputElement>(null);
-  const repasswordRef = useRef<HTMLInputElement>(null);
-  const [registerFailed, setRegisterFailed] = useState(false);
+  const usernameInputRef = useRef<HTMLInputElement>(null);
+  const fullnameInputRef = useRef<HTMLInputElement>(null);
+  const emailInputRef = useRef<HTMLInputElement>(null);
+  const phoneInputRef = useRef<HTMLInputElement>(null);
+  const passwordInputRef = useRef<HTMLInputElement>(null);
+  const repasswordInputRef = useRef<HTMLInputElement>(null);
+  const [registerPending, setRegisterPending] = useState(false);
   const [registerSuccess, setRegisterSuccess] = useState(false);
+  const [registerFailed, setRegisterFailed] = useState(false);
 
   const [isNextStep, setIsNextStep] = useState(false);
   const [isShowRegisterModal, setIsShowRegisterModal] = useRecoilState(isShowRegisterModalAtom);
   const setIsShowLoginModal = useSetRecoilState(isShowLoginModalAtom);
-  const [isRepasswordInccorect, setRepasswordInccorect] = useState(false);
 
   const [userRegisterRequest, setUserRegisterRequest] = useState<IUserRegisterRequestBody>({
     username: '',
@@ -39,7 +40,7 @@ export const RegisterModal = (props: Props) => {
     password: ''
   });
   const [repasswordValue, setRepasswordValue] = useState('');
-  const [isInputsEmpty, setIsInputsEmpty] = useState({ 
+  const [isInputsError, setIsInputsError] = useState({ 
     username: false, 
     full_name: false,
     email: false,
@@ -47,11 +48,11 @@ export const RegisterModal = (props: Props) => {
     password: false,
     repassword: false
   });
-  const inputEmptyHint = useRef({
-    username: 'Cần nhập tên người dùng',
-    full_name: 'Cần nhập tên pháp lý',
-    email: 'Cần nhập địa chỉ email',
-    phone: 'Cần nhập số điện thoại',
+  const [inputsErrorHint, setInputsErrorHint] = useState({
+    username: '',
+    full_name: '',
+    email: '',
+    phone: '',
     password: 'Cần nhập mật khẩu',
     repassword: 'Cần nhập lại mật khẩu',
   });
@@ -63,7 +64,7 @@ export const RegisterModal = (props: Props) => {
       [name]: value
     }));
 
-    setIsInputsEmpty((prevErrors) => ({
+    setIsInputsError((prevErrors) => ({
       ...prevErrors,
       [name]: false
     }));
@@ -73,76 +74,270 @@ export const RegisterModal = (props: Props) => {
     const { name, value } = event.target;
     setRepasswordValue(value)
 
-    setIsInputsEmpty((prevErrors) => ({
+    setIsInputsError((prevErrors) => ({
       ...prevErrors,
       [name]: false
     }));
-
-    setRepasswordInccorect(false);
   }, [])
 
-  const handleInfoSubmit = useCallback(() => {
-    if (usernameRef.current && fullnameRef.current && emailRef.current && phoneRef.current) {
+  const checkInputUsername = useCallback(() => {
+    if (usernameInputRef.current) {
       if (!userRegisterRequest.username) {
-        setIsInputsEmpty((prevErrors) => ({
+        setIsInputsError((prevErrors) => ({
           ...prevErrors,
           username: true,
         }));
-        usernameRef.current.focus();
-      } else if (!userRegisterRequest.full_name) {
-        setIsInputsEmpty((prevErrors) => ({
+        setInputsErrorHint((prevHint) => ({
+          ...prevHint,
+          username: "Cần nhập tên người dùng!"
+        }))
+        usernameInputRef.current.focus();
+        return false
+      }
+    }
+    return true
+  }, [usernameInputRef.current, userRegisterRequest])
+
+  const checkInputFullname = useCallback(() => {
+    if (fullnameInputRef.current) {
+      if (!userRegisterRequest.full_name) {
+        setIsInputsError((prevErrors) => ({
           ...prevErrors,
           full_name: true,
         }));
-        fullnameRef.current.focus();
-      } else if (!userRegisterRequest.email) {
-        setIsInputsEmpty((prevErrors) => ({
+        setInputsErrorHint((prevHint) => ({
+          ...prevHint,
+          full_name: "Cần nhập tên pháp lý!"
+        }))
+        fullnameInputRef.current.focus();
+        return false
+      }
+    }
+    return true
+  }, [fullnameInputRef.current, userRegisterRequest])
+
+  const checkInputEmail = useCallback(() => {
+    if (emailInputRef.current) {
+      if (!userRegisterRequest.email) {
+        setIsInputsError((prevErrors) => ({
           ...prevErrors,
           email: true,
         }));
-        emailRef.current.focus();
-      } else if (!userRegisterRequest.phone) {
-        setIsInputsEmpty((prevErrors) => ({
+        setInputsErrorHint((prevHint) => ({
+          ...prevHint,
+          email: "Cần nhập địa chỉ email!"
+        }))
+        emailInputRef.current.focus();
+        return false
+      }
+      const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailPattern.test(userRegisterRequest.email)) {
+        setIsInputsError((prevErrors) => ({
+          ...prevErrors,
+          email: true,
+        }));
+        setInputsErrorHint((prevHint) => ({
+          ...prevHint,
+          email: "Địa chỉ email không phù hợp!"
+        }))
+        emailInputRef.current.focus();
+        return false
+      }
+    }
+    return true
+  }, [emailInputRef.current, userRegisterRequest])
+
+  const checkInputPhone = useCallback(() => {
+    if (phoneInputRef.current) {
+      if (!userRegisterRequest.phone) {
+        setIsInputsError((prevErrors) => ({
           ...prevErrors,
           phone: true,
         }));
-        phoneRef.current.focus();
-      } else {
-        setIsNextStep(true);
+        setInputsErrorHint((prevHint) => ({
+          ...prevHint,
+          phone: "Cần nhập số điện thoại!"
+        }))
+        phoneInputRef.current.focus();
+        return false
+      }
+      if (userRegisterRequest.phone.length < 8 || userRegisterRequest.phone.length > 12) {
+        setIsInputsError((prevErrors) => ({
+          ...prevErrors,
+          phone: true,
+        }));
+        setInputsErrorHint((prevHint) => ({
+          ...prevHint,
+          phone: "Độ dài số điện thoại không hợp lệ!"
+        }))
+        phoneInputRef.current.focus();
+        return false
+      }
+      const regex = /^[0-9+]+$/;
+      if (!regex.test(userRegisterRequest.phone)) {
+        setIsInputsError((prevErrors) => ({
+          ...prevErrors,
+          phone: true,
+        }));
+        setInputsErrorHint((prevHint) => ({
+          ...prevHint,
+          phone: "Số điện thoại không hợp lệ!"
+        }));
+        phoneInputRef.current.focus();
+        return false;
       }
     }
-  }, [userRegisterRequest, usernameRef.current, fullnameRef.current, emailRef.current, phoneRef.current])
 
-  const handleRegisterSubmit = useCallback(() => {
-    setRegisterFailed(false);
-    if (passwordRef.current && repasswordRef.current) {
+    const phoneInputValue = userRegisterRequest.phone;
+    if (phoneInputValue.startsWith('+84')) {
+      setUserRegisterRequest((prevRequest) => ({
+        ...prevRequest,
+        phone: phoneInputValue
+      }));
+    } else if (phoneInputValue.startsWith('84')) {
+      setUserRegisterRequest((prevRequest) => ({
+        ...prevRequest,
+        phone: `+${phoneInputValue}`
+      }));
+    } else if (phoneInputValue.startsWith('0')){
+      setUserRegisterRequest((prevRequest) => ({
+        ...prevRequest,
+        phone: phoneInputValue.replace(/^0/, '+84')
+      }));
+    } else {
+      setUserRegisterRequest((prevRequest) => ({
+        ...prevRequest,
+        phone: `+84${phoneInputValue}`
+      }));
+    }
+    return true
+  }, [phoneInputRef.current, userRegisterRequest])
+
+  const handleInfoSubmit = useCallback(() => {
+    setRegisterPending(true)
+    setTimeout(() => {
+      setRegisterPending(false)
+    }, 100)
+    setIsNextStep(true);
+  }, [])
+
+  const handleButtonNextMouseClick = useCallback(() => {
+    checkInputUsername()
+      && checkInputFullname()
+      && checkInputEmail()
+      && checkInputPhone()
+      && handleInfoSubmit()
+  }, [
+    usernameInputRef.current,
+    fullnameInputRef.current,
+    emailInputRef.current,
+    phoneInputRef.current,
+    userRegisterRequest
+  ])
+
+  const checkInputPassword = useCallback(() => {
+    if (passwordInputRef.current) {
       if (!userRegisterRequest.password) {
-        setIsInputsEmpty((prevErrors) => ({
+        setIsInputsError((prevErrors) => ({
           ...prevErrors,
           password: true,
         }));
-        passwordRef.current.focus();
-      } else if (!repasswordValue) {
-        setIsInputsEmpty((prevErrors) => ({
+        setInputsErrorHint((prevHint) => ({
+          ...prevHint,
+          password: "Cần nhập mật khẩu!"
+        }))
+        passwordInputRef.current.focus();
+        return false
+      }
+      if (userRegisterRequest.password.length < 6) {
+        setIsInputsError((prevErrors) => ({
           ...prevErrors,
-          repassword: true,
+          password: true,
         }));
-        repasswordRef.current.focus();
-      } else {
-        if (repasswordValue !== userRegisterRequest.password) {
-          setRepasswordInccorect(true);
-        } else {
-          userActions.register(userRegisterRequest)
-          .then(() => {
-            setRegisterSuccess(true);
-          })
-          .catch((error) => {
-            setRegisterFailed(true);
-          })
-        }
+        setInputsErrorHint((prevHint) => ({
+          ...prevHint,
+          password: "Mật khẩu phải có độ dài lớn hơn 6 ký tự!"
+        }))
+        passwordInputRef.current.focus();
+        return false
       }
     }
-  }, [userRegisterRequest, repasswordValue, passwordRef.current, repasswordRef.current])
+    return true
+  }, [passwordInputRef.current, userRegisterRequest])
+
+  const checkInputRepassword = useCallback(() => {
+    if (repasswordInputRef.current) {
+      if (!repasswordValue) {
+        setIsInputsError((prevErrors) => ({
+          ...prevErrors,
+          password: true,
+        }));
+        setInputsErrorHint((prevHint) => ({
+          ...prevHint,
+          password: "Cần nhập lại mật khẩu!"
+        }))
+        repasswordInputRef.current.focus();
+        return false
+      }
+      if (repasswordValue.length < 6) {
+        setIsInputsError((prevErrors) => ({
+          ...prevErrors,
+          password: true,
+        }));
+        setInputsErrorHint((prevHint) => ({
+          ...prevHint,
+          password: "Mật khẩu phải có độ dài lớn hơn 6 ký tự!"
+        }))
+        repasswordInputRef.current.focus();
+        return false
+      }
+      if (repasswordValue !== userRegisterRequest.password) {
+        setIsInputsError((prevErrors) => ({
+          ...prevErrors,
+          password: true,
+        }));
+        setInputsErrorHint((prevHint) => ({
+          ...prevHint,
+          password: "Nhập lại mật khẩu không chính xác!"
+        }))
+        repasswordInputRef.current.focus();
+        return false
+      }
+    }
+    return true
+  }, [repasswordInputRef.current, repasswordValue, userRegisterRequest.password])
+
+  const handleRegisterSubmit = useCallback(() => {
+    setRegisterPending(true)
+    userActions.register(userRegisterRequest)
+    .then(() => {
+      setTimeout(() => {
+        setRegisterPending(false)
+        setRegisterSuccess(true);
+        setTimeout(() => {
+          setIsShowRegisterModal(false);
+          setIsShowLoginModal(true);
+        }, 500)
+      }, 200)
+    })
+    .catch(() => {
+      setTimeout(() => {
+        setRegisterPending(false)
+        setRegisterFailed(true);
+      }, 200);
+    })
+  }, [userRegisterRequest, repasswordValue, passwordInputRef.current, repasswordInputRef.current])
+
+  const handleButtonRegisterMouseClick = useCallback(() => {
+    checkInputPassword()
+      && checkInputRepassword()
+      && handleRegisterSubmit()
+  }, [
+    passwordInputRef.current,
+    repasswordInputRef.current,
+    userRegisterRequest,
+    repasswordValue
+  ])
 
   const handleContainerMouseClick = useCallback((event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     if (containerRef.current && modalRef.current) {
@@ -165,15 +360,6 @@ export const RegisterModal = (props: Props) => {
     setRegisterFailed(false);
     setIsNextStep(false);
   }, [])
-
-  useEffect(() => {
-    if (registerSuccess) {
-      setTimeout(() => {
-        setIsShowRegisterModal(false);
-        setIsShowLoginModal(true);
-      }, 500)
-    }
-  }, [registerSuccess])
 
   return (
     <S.StyledContainer
@@ -220,10 +406,10 @@ export const RegisterModal = (props: Props) => {
                     <S.StyledForm>
                       <S.StyledInputWrapper>
                         <S.StyledInput
-                          ref={ usernameRef }
+                          ref={ usernameInputRef }
                           name='username'
                           value={ userRegisterRequest.username }
-                          isEmpty={ isInputsEmpty.username }
+                          isError={ isInputsError.username }
                           type='text'
                           required
                           tabIndex={1}
@@ -233,10 +419,10 @@ export const RegisterModal = (props: Props) => {
                       <S.StyledLine/>
                       <S.StyledInputWrapper>
                         <S.StyledInput
-                          ref={ fullnameRef }
+                          ref={ fullnameInputRef }
                           name='full_name'
                           value={ userRegisterRequest.full_name }
-                          isEmpty={ isInputsEmpty.full_name }
+                          isError={ isInputsError.full_name }
                           type='text'
                           required
                           tabIndex={2}
@@ -246,10 +432,10 @@ export const RegisterModal = (props: Props) => {
                       <S.StyledLine/>
                       <S.StyledInputWrapper>
                         <S.StyledInput
-                          ref={ emailRef }
+                          ref={ emailInputRef }
                           name='email'
                           value={ userRegisterRequest.email }
-                          isEmpty={ isInputsEmpty.email }
+                          isError={ isInputsError.email }
                           type='text'
                           required
                           tabIndex={3}
@@ -257,28 +443,33 @@ export const RegisterModal = (props: Props) => {
                         <S.StyledFormLabel>Địa chỉ email</S.StyledFormLabel>
                       </S.StyledInputWrapper>
                       <S.StyledLine/>
-                      <S.StyledInputWrapper>
-                        <S.StyledInput
-                          ref={ phoneRef }
-                          name='phone'
-                          value={ userRegisterRequest.phone }
-                          isEmpty={ isInputsEmpty.phone }
-                          type='text'
-                          required
-                          tabIndex={3}
-                          onChange={ handleInputChange }/>
-                        <S.StyledFormLabel>Số điện thoại</S.StyledFormLabel>
-                      </S.StyledInputWrapper>
-                      <S.StyledLine/>
+                      <S.StyledInputPhoneWrapper>
+                        <S.StyledPhoneLocaleWrapper>
+                          <S.StyledPhoneLocaleIcon src="/images/flag_vn.png"/>
+                          <S.StyledPhoneLocaleValue>+84</S.StyledPhoneLocaleValue>
+                        </S.StyledPhoneLocaleWrapper>
+                        <S.StyledInputWrapper>
+                          <S.StyledInput
+                            ref={ phoneInputRef }
+                            name='phone'
+                            value={ userRegisterRequest.phone }
+                            isError={ isInputsError.phone }
+                            type='text'
+                            required
+                            tabIndex={3}
+                            onChange={ handleInputChange }/>
+                          <S.StyledFormLabel>Số điện thoại</S.StyledFormLabel>
+                        </S.StyledInputWrapper>
+                      </S.StyledInputPhoneWrapper>
                     </S.StyledForm>
                   ) : (
                     <S.StyledForm>
                       <S.StyledInputWrapper>
                         <S.StyledInput
-                          ref={ passwordRef }
+                          ref={ passwordInputRef }
                           name='password'
                           value={ userRegisterRequest.password }
-                          isEmpty={ isInputsEmpty.password }
+                          isError={ isInputsError.password }
                           type='password'
                           required
                           tabIndex={1}
@@ -288,10 +479,10 @@ export const RegisterModal = (props: Props) => {
                       <S.StyledLine/>
                       <S.StyledInputWrapper>
                         <S.StyledInput
-                          ref={ repasswordRef }
+                          ref={ repasswordInputRef }
                           name='repassword'
                           value={ repasswordValue }
-                          isEmpty={ isInputsEmpty.repassword }
+                          isError={ isInputsError.repassword }
                           type='password'
                           required
                           tabIndex={2}
@@ -304,30 +495,36 @@ export const RegisterModal = (props: Props) => {
                 }
       
                 <S.StyledInputEmptyHintWrapper>
-                  {(isInputsEmpty.username 
-                    || isInputsEmpty.full_name 
-                    || isInputsEmpty.email 
-                    || isInputsEmpty.phone 
-                    || isInputsEmpty.password
-                    || isInputsEmpty.repassword
-                    || isRepasswordInccorect
+                  {(isInputsError.username 
+                    || isInputsError.full_name 
+                    || isInputsError.email 
+                    || isInputsError.phone 
+                    || isInputsError.password
+                    || isInputsError.repassword
                   ) && <HiExclamationCircle size={"20px"} color={"#C13515"}/> }
-                  { isInputsEmpty.username && <S.StyledInputEmptyHintLabel>{ inputEmptyHint.current.username }</S.StyledInputEmptyHintLabel> }
-                  { isInputsEmpty.full_name && <S.StyledInputEmptyHintLabel>{ inputEmptyHint.current.full_name }</S.StyledInputEmptyHintLabel> }
-                  { isInputsEmpty.email && <S.StyledInputEmptyHintLabel>{ inputEmptyHint.current.email }</S.StyledInputEmptyHintLabel> }
-                  { isInputsEmpty.phone && <S.StyledInputEmptyHintLabel>{ inputEmptyHint.current.phone }</S.StyledInputEmptyHintLabel> }
-                  { isInputsEmpty.password && <S.StyledInputEmptyHintLabel>{ inputEmptyHint.current.password }</S.StyledInputEmptyHintLabel> }
-                  { isInputsEmpty.repassword && <S.StyledInputEmptyHintLabel>{ inputEmptyHint.current.repassword }</S.StyledInputEmptyHintLabel> }
-                  { isRepasswordInccorect && <S.StyledInputEmptyHintLabel>Nhập lại mật khẩu không chính xác!</S.StyledInputEmptyHintLabel> }
+                  { isInputsError.username && <S.StyledInputEmptyHintLabel>{ inputsErrorHint.username }</S.StyledInputEmptyHintLabel> }
+                  { isInputsError.full_name && <S.StyledInputEmptyHintLabel>{ inputsErrorHint.full_name }</S.StyledInputEmptyHintLabel> }
+                  { isInputsError.email && <S.StyledInputEmptyHintLabel>{ inputsErrorHint.email }</S.StyledInputEmptyHintLabel> }
+                  { isInputsError.phone && <S.StyledInputEmptyHintLabel>{ inputsErrorHint.phone }</S.StyledInputEmptyHintLabel> }
+                  { isInputsError.password && <S.StyledInputEmptyHintLabel>{ inputsErrorHint.password }</S.StyledInputEmptyHintLabel> }
+                  { isInputsError.repassword && <S.StyledInputEmptyHintLabel>{ inputsErrorHint.repassword }</S.StyledInputEmptyHintLabel> }
                 </S.StyledInputEmptyHintWrapper>
       
                 <S.StyledPolicyHint>Chính sách về quyền riêng tư</S.StyledPolicyHint>
-                  
-                <S.StyledButtonRegister
-                  tabIndex={5}
-                  onClick={ !isNextStep ? handleInfoSubmit : handleRegisterSubmit }>
-                  { !isNextStep ? "Tiếp tục" : "Đăng ký"}
-                </S.StyledButtonRegister>
+                
+                <S.StyledButtonRegisterWrapper>
+                  {registerPending
+                    ? (
+                    <S.StyledLoadingWrapper>
+                      <Loading size={10}/>
+                    </S.StyledLoadingWrapper>)
+                    : (
+                      <S.StyledButtonRegister
+                      tabIndex={5}
+                      onClick={ !isNextStep ? handleButtonNextMouseClick : handleButtonRegisterMouseClick }>
+                      { !isNextStep ? "Tiếp tục" : "Đăng ký"}
+                    </S.StyledButtonRegister>)}
+                </S.StyledButtonRegisterWrapper>
       
                 <S.StyledLoginHintWrapper>
                   <S.StyledLoginHint>Bạn đã có tài khoản? &nbsp;</S.StyledLoginHint>
@@ -342,7 +539,6 @@ export const RegisterModal = (props: Props) => {
               </S.StyledModalContentWrapepr>
             )
         }
-
 
       </M.MotionModalWrapper>
     </S.StyledContainer>
