@@ -519,7 +519,7 @@ export const RegisterModal = (props: Props) => {
                       <Loading size={10}/>
                     </S.StyledLoadingWrapper>)
                     : (
-                      <S.StyledButtonRegister
+                    <S.StyledButtonRegister
                       tabIndex={5}
                       onClick={ !isNextStep ? handleButtonNextMouseClick : handleButtonRegisterMouseClick }>
                       { !isNextStep ? "Tiếp tục" : "Đăng ký"}

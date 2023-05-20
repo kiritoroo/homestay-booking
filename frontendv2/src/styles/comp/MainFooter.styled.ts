@@ -12,6 +12,7 @@ export const StyledContainer = styled.div`
   padding: 15px 50px;
   border-top: solid 1px #DDDDDD;
   background: #FFFFFF;
+  z-index: 1;
 `
 
 export const StyledLinkWrapper = styled.div`

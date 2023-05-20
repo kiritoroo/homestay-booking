@@ -29,3 +29,21 @@ export interface IHomestayGetAllResponse {
     }]
   }]
 }
+
+export interface IHomestayGetByIDRequestParams {
+  page_id: number;
+  page_size: number;
+}
+
+
+export interface IHomestayGetByIDResponse {
+  homestays: [{
+    homestay: IHomestaySchema,
+    list_of_feedbacks: {
+      feedbacks: [{
+        commentor: IUserSchema,
+        feedback: IFeedBackSchema
+      }]
+    }
+  }]
+}

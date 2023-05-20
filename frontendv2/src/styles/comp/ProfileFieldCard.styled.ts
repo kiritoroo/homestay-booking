@@ -94,6 +94,16 @@ export const StyledInput = styled.input<{ isEmpty: boolean }>`
   }
 `
 
+export const StyledSaveButtonWrapper = styled.div`
+  position: relative;
+  width: 90px;
+`
+
+export const StyledLoadingWrapper = styled.div`
+  padding-top: 20px;
+  padding-bottom: 20px;
+`
+
 export const StyledSaveButton = styled.button`
   display: flex;
   align-items: center;

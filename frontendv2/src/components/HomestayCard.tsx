@@ -65,7 +65,8 @@ export const HomestayCard = (props: Props) => {
       onMouseEnter={ handleMouseEnter }
       onMouseLeave={ handleMouseLeave }>
 
-      { isSkeleton ? (
+      { isSkeleton 
+      ? (
       <S.StyledContainer>
         <SkeletonTheme baseColor="#f2f7fc" highlightColor="#f8fbfd">
           <Skeleton count={1} width={"28vw"} height={"25vw"}/>
@@ -73,7 +74,8 @@ export const HomestayCard = (props: Props) => {
           <Skeleton count={1} width={100} height={20} style={{ marginLeft: 10 }}/>
           <Skeleton count={1} width={200} height={30}/>
         </SkeletonTheme>
-      </S.StyledContainer> ) : (
+      </S.StyledContainer> ) 
+      : (
       <React.Fragment>
         <S.StyledImageWrapper>
           <S.StyledImageList

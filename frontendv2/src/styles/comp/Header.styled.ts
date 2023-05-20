@@ -14,7 +14,7 @@ export const StyledContainer = styled.div`
   border-top: solid 1px #DDDDDD;
   border-bottom: solid 1px #DDDDDD;
   background: #FFFFFF;
-  z-index: 1;
+  z-index: 2;
 `
 
 export const StyledLogoWrapper = styled.div`

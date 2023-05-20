@@ -2,13 +2,15 @@ import { IFeedBackSchema } from '@store/feedback/feedback.schema';
 import React, { useCallback, useState } from 'react';
 import * as S from '@style/comp/FeedbackCard.styled';
 import { MdOutlineNavigateNext } from 'react-icons/md';
+import { IUserSchema } from '@store/user/user.schema';
 
 interface Props {
   feedback: IFeedBackSchema;
+  commentor: IUserSchema;
 }
 
 export const FeedbackCard = (props: Props) => {
-  const { feedback} = props;
+  const { feedback, commentor} = props;
 
   const MAX_COMMENT_LENGTH = 300;
   const comment = feedback.commention;
@@ -33,10 +35,10 @@ export const FeedbackCard = (props: Props) => {
     <S.StyledContainer>
       <S.StyledUserWrapper>
         <S.StyledAvatar>
-          { feedback.user_comment.charAt(0).toLocaleUpperCase() }
+          { commentor.full_name.charAt(0).toLocaleUpperCase() }
         </S.StyledAvatar> 
         <S.StyledUserInfoWrapper>
-          <S.StyledUserName>{ feedback.user_comment }</S.StyledUserName>
+          <S.StyledUserName>{ commentor.full_name }</S.StyledUserName>
           <S.StyledTime>{ formattedDate }</S.StyledTime>
         </S.StyledUserInfoWrapper>
       </S.StyledUserWrapper>

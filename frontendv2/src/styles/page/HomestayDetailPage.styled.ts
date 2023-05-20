@@ -6,8 +6,8 @@ export const StyledContainer = styled.div`
 `
 
 export const StyledContentWrapper = styled.div`
-  margin-left: 40px;
-  margin-right: 40px;
+  margin-left: 10vw;
+  margin-right: 10vw;
   margin-top: 40px;
   margin-bottom: 60px;
   display: flex;
@@ -53,67 +53,178 @@ export const StyledImage = styled.img`
   object-fit: cover;
 `
 
-export const StyledFeedbackContentWrapper = styled.div`
-  max-width: 900px;
-`
-
-export const StyledFeedbackSumaryWrapper = styled.div`
-  
-`
-
-export const StyledFeedbackTitle = styled.div`
-  font-weight: 400;
-  font-size: 20px;
+export const StyledMidSectionContainer = styled.div`
+  height: auto;
   display: flex;
-  align-items: center;
-  margin-top: 50px;
+  flex-direction: row;
+  align-items: start;
+  justify-items: end;
+  gap: 100px;
+  margin-bottom: 80px;
+
+  @media screen and (max-width: 1300px) {
+    height: auto;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+  }
 `
 
-export const StyledFeebackListWrapper = styled.div`
+export const StyledHomestayInfoContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: start;
+  justify-content: center;
+`
+
+export const StyledHomestayBigInfoListWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  margin-top: 25px;
+  margin-bottom: 25px;
+  gap: 15px;
+`
+
+export const StyledHomestayBigInfoWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  gap: 15px;
+  width: 220px;
+  height: 100px;
+  border: 1px solid #DDDDDD;
+  padding: 30px 25px;
+  border-radius: 16px;
+`
+
+export const StyledHomestayMediumInfoListWrapper = styled.div`
+  margin-top: 40px;
+  margin-bottom: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  justify-content: center;
+  gap: 40px;
+`
+
+export const StyledHomestayMediumInfoWrapper = styled.div`
+  display: flex;
+  align-items: start;
+  justify-content: center;
+  gap: 15px;
+`
+
+export const StyledHomestayMediumFlexVezWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  justify-content: center;
+  gap: 5px;
+`
+
+export const StyledHomestaySmallInfoListWrapper = styled.div`
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-column-gap: 60px;
+  grid-row-gap: 30px;
   margin-top: 40px;
   margin-bottom: 40px;
 `
 
-export const StyledFeedbackCriteriaWrapper = styled.div`
+export const StyledHomestaySmallInfoWrapper = styled.div`
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  width: 400px;
-  margin-top: 10px;
-  margin-bottom: 10px;
+  justify-content: start;
+  gap: 15px;
 `
 
-export const StyledFeedbackCriteriaTitle = styled.div`
+export const StyledIconWrapper = styled.div`
+  color: #7D97B8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`
+
+export const StyledHomestayInfoTitle = styled.div`
+  font-weight: 400;
+  font-size: 14px;
+`
+
+export const StyledHomestayInfoDesc = styled.div`
+  font-size: 12px;
   font-weight: 300;
-  font-size: 16px;
-`
-
-export const StyledFeedbackCriteriaRatingWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 10px;
-`
-
-export const StyledFeedbackCriteriaRatingProgress = styled.div`
-  background-color: #7D97B8;
-  width: 170px;
-  height: 5px;
-  border-radius: 10px;
-`
-
-export const StyledFeebackCriteriaRatingValue = styled.div`
-  font-weight: 600;
-  font-size: 13px;
 `
 
 export const StyledLine = styled.div`
+  width: 100%;
   border-bottom: 1px solid #DDDDDD;
 `
 
-export const StyledFeedbackListWrapper = styled.div`
+export const StyledHomestayDescContainer = styled.div`
   margin-top: 20px;
-  margin-bottom: 20px;
+  margin-bottom: 50px;
+`
+
+export const StyledHomestayDescWrapper = styled.div`
+  
+`
+
+export const StyledHomestayDescLabel = styled.div`
+  font-size: 20px;
+  font-weight: 600;
+  margin-top: 20px;
+`
+
+export const StyledHomestayDesc = styled.div`
+  font-size: 15px;
+  font-weight: 300;
+  line-height: 28px;
+  margin-top: 20px;
+`
+
+export const StyledHideWrapper = styled.div`
+  margin-top: 5px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: start;
+
+  &:hover {
+    cursor: pointer;
+    text-decoration: underline;
+  }
+
+  &:active {
+    color: #7D97B8;
+  }
+`
+
+export const StyledHide = styled.div`
+  text-decoration: underline;
+  font-size: 15px;
+  font-weight: 600;
+`
+
+export const StyledShowmoreWrapper = styled.div`
+  margin-top: 5px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: start;
+
+  &:hover {
+    cursor: pointer;
+    text-decoration: underline;
+  }
+
+  &:active {
+    color: #7D97B8;
+  }
+`
+
+export const StyledShowmore = styled.div`
+
+  text-decoration: underline;
+  font-size: 15px;
+  font-weight: 600;
 `

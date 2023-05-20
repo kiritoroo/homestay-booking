@@ -19,7 +19,7 @@ export const HomestayList = (props: Props) => {
   useLayoutEffect(() => {
     homestayActions.getAll(homestayGetAllRequestParams)
       .then((response: IHomestayGetAllResponse) => {
-        setHomestaysData(response)
+        setHomestaysData(response);
       })
   }, [])
 

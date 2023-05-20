@@ -1,5 +1,5 @@
 import { useAxiosWrapper } from "src/api/axiosWrapper";
-import { IHomestayGetAllRequestParams, IHomestayGetAllResponse, IHomestaySchema } from "./homestay.schema";
+import { IHomestayGetAllRequestParams, IHomestayGetAllResponse, IHomestayGetByIDRequestParams, IHomestaySchema } from "./homestay.schema";
 
 export { useHomestayActions }
 
@@ -8,17 +8,17 @@ function useHomestayActions() {
 
   return {
     getAll,
-    getById
+    getByID
   }
 
   function getAll(params: IHomestayGetAllRequestParams) {
     return axiosWrapper.get('/homestays', null, params)
   }
 
-  function getById(homestayId: string) {
-    return axiosWrapper.get(`/homestays/${homestayId}`)
-      .then((response: IHomestaySchema) => {
-        console.log(response)
-      })
+  function getByID(
+    homestayId: string,
+    params: IHomestayGetByIDRequestParams
+  ) {
+    return axiosWrapper.get(`/homestays/${homestayId}`, null, params)
   }
 }

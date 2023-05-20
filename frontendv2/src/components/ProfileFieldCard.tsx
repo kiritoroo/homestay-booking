@@ -3,6 +3,7 @@ import * as S from '@style/comp/ProfileFieldCard.styled';
 import { useRecoilState } from 'recoil';
 import { editingIdAtom } from '@store/app.atoms';
 import { HiExclamationCircle } from 'react-icons/hi';
+import { Loading } from './Loading';
 
 interface Props {
   name: string;
@@ -19,10 +20,11 @@ export const ProfileFieldCard = (props: Props) => {
 
   const inputRef = useRef<HTMLInputElement>(null);
   const [isEditing, setIsEditing] = useState(false);
+  const [isPending, setIsPending] = useState(false);
   const [editingId, setEditingId] = useRecoilState(editingIdAtom);
   const [isInputEmpty, setIsInputEmpty] = useState(false);
   const defaultValue = useMemo<string>(() => value, [value])
-
+  
   const handleModifyClick = useCallback(() => {
     if (editingId && editingId !== name) return;
     
@@ -48,8 +50,13 @@ export const ProfileFieldCard = (props: Props) => {
         inputRef.current.focus();
       } else {
         onSave();
-        setIsEditing(false);
-        setEditingId(null);
+        setIsPending(true)
+
+        setTimeout(() => {
+          setIsPending(false)
+          setIsEditing(false);
+          setEditingId(null);
+        }, 200)
       }
     }
   }, [inputRef.current, value])
@@ -88,9 +95,20 @@ export const ProfileFieldCard = (props: Props) => {
         { isInputEmpty && <S.StyledInputEmptyHintLabel>{ emptyHint }</S.StyledInputEmptyHintLabel> }
       </S.StyledInputEmptyHintWrapper>
 
-      { isEditing ? (
-        <S.StyledSaveButton onClick={ handleSaveMouseClick }>Lưu</S.StyledSaveButton>
-      ) : ( null )}
+      <S.StyledSaveButtonWrapper>
+        { isEditing ? (
+          isPending
+            ? (
+            <S.StyledLoadingWrapper>
+              <Loading size={8}/>
+            </S.StyledLoadingWrapper>)
+            : (
+            <S.StyledSaveButton 
+              onClick={ handleSaveMouseClick }>
+              Lưu
+            </S.StyledSaveButton>)
+        ) : ( null )}
+      </S.StyledSaveButtonWrapper>
 
     </S.StyledContainer>
   )
