@@ -6,9 +6,9 @@ import { IUserLoginRequestBody } from '@store/user/user.schema';
 import { useUserActions } from '@store/user/user.actions';
 import { HiExclamationCircle } from 'react-icons/hi';
 import { BsFillCheckCircleFill } from 'react-icons/bs';
-import * as S from '@style/comp/LoginModal.styled';
+import * as S from '@style/comp/Modal/LoginModal.styled';
 import * as M from '@motion/LoginModal.motion';
-import { Loading } from './Loading';
+import { Loading } from '../Loading';
 
 interface Props {}
 
@@ -25,6 +25,7 @@ export const LoginModal = (props: Props) => {
   const [loginPending, setLoginPending] = useState(false);
   const [loginSuccess, setLoginSuccess] = useState(false);
   const [loginFailed, setLoginFailed] = useState(false);
+  const [loginFailedText, setLoginfailedText] = useState("");
   
   const [userLoginRequest, setUserLoginRequest] = useState<IUserLoginRequestBody>({
     username: '',
@@ -114,7 +115,13 @@ export const LoginModal = (props: Props) => {
           window.location.reload();
         }, 200)
       })
-      .catch(() => {
+      .catch((error: Error) => {
+        const errorStatus = Number(error.message);
+        if (errorStatus == 401) {
+          setLoginfailedText("Đăng nhập thất bại!")
+        } else if (errorStatus == 404) {
+          setLoginfailedText("Tài khoản không tồn tại!")
+        }
         setTimeout(() => {
           setLoginPending(false)
           setLoginFailed(true);
@@ -230,7 +237,7 @@ export const LoginModal = (props: Props) => {
                   </S.StyledRegisterLink>
                 </S.StyledRegisterHintWrapper>
 
-                { loginFailed && <S.StyledLoginFailedAlert>Đăng nhập thất bại!</S.StyledLoginFailedAlert> }
+                { loginFailed && <S.StyledLoginFailedAlert> { loginFailedText } </S.StyledLoginFailedAlert> }
 
               </S.StyledModalContentWrapepr>
             )

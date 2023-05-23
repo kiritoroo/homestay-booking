@@ -1,7 +1,7 @@
 import React, { useCallback, useRef, useState, ChangeEvent, useEffect } from 'react';
 import { useRecoilState, useSetRecoilState } from 'recoil';
 import { isShowLoginModalAtom, isShowRegisterModalAtom } from '@store/app.atoms';
-import * as S from '@style/comp/RegisterModal.styled';
+import * as S from '@style/comp/Modal/RegisterModal.styled';
 import * as M from '@motion/RegisterModal.motion';
 import { MdOutlineClose } from 'react-icons/md';
 import { IUserRegisterRequestBody } from '@store/user/user.schema';
@@ -9,7 +9,7 @@ import { HiExclamationCircle } from 'react-icons/hi';
 import { useUserActions } from '@store/user/user.actions';
 import { MdOutlineNavigateNext } from 'react-icons/md';
 import { BsFillCheckCircleFill } from 'react-icons/bs';
-import { Loading } from './Loading';
+import { Loading } from '../Loading';
 
 interface Props {}
 

@@ -59,10 +59,10 @@ export const StyledMidSectionContainer = styled.div`
   flex-direction: row;
   align-items: start;
   justify-items: end;
-  gap: 100px;
+  gap: 80px;
   margin-bottom: 80px;
 
-  @media screen and (max-width: 1300px) {
+  @media screen and (max-width: 1200px) {
     height: auto;
     flex-direction: column;
     align-items: center;
@@ -76,12 +76,15 @@ export const StyledHomestayInfoContainer = styled.div`
   flex-direction: column;
   align-items: start;
   justify-content: center;
+  max-width: 65vw;
 `
 
 export const StyledHomestayBigInfoListWrapper = styled.div`
+  width: 100%;
   display: flex;
   align-items: center;
-  justify-content: start;
+  justify-content: center;
+  flex-wrap: wrap;
   margin-top: 25px;
   margin-bottom: 25px;
   gap: 15px;
@@ -92,10 +95,10 @@ export const StyledHomestayBigInfoWrapper = styled.div`
   align-items: center;
   justify-content: start;
   gap: 15px;
-  width: 220px;
-  height: 100px;
+  width: 180px;
+  height: 90px;
   border: 1px solid #DDDDDD;
-  padding: 30px 25px;
+  padding: 25px 20px;
   border-radius: 16px;
 `
 

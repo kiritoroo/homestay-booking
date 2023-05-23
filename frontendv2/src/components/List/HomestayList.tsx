@@ -1,6 +1,6 @@
 import React, { useCallback, useLayoutEffect, useMemo, useState } from 'react';
-import * as S from '@style/comp/HomestayList.styled';
-import { HomestayCard } from './HomestayCard';
+import * as S from '@style/comp/List/HomestayList.styled';
+import { HomestayCard } from '../Card/HomestayCard';
 import { useHomestayActions } from '@store/homestay/homestay.actions';
 import { IHomestayGetAllRequestParams, IHomestayGetAllResponse, IHomestaySchema } from '@store/homestay/homestay.schema';
 import { useRecoilValue } from 'recoil';

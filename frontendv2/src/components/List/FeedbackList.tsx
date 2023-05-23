@@ -1,9 +1,9 @@
 import React, { useLayoutEffect, useMemo, useState } from "react";
-import * as S from '@style/comp/FeedbackList.styled';
+import * as S from '@style/comp/List/FeedbackList.styled';
 import { IUserSchema } from "@store/user/user.schema";
 import { IFeedBackSchema } from "@store/feedback/feedback.schema";
 import { BsStarFill } from "react-icons/bs";
-import { FeedbackCard } from "./FeedbackCard";
+import { FeedbackCard } from "../Card/FeedbackCard";
 
 interface Props {
   feedbacksData: [{

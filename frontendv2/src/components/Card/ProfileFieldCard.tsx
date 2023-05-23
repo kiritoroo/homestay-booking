@@ -1,9 +1,9 @@
 import React, { useCallback, useState, useRef, ChangeEvent, useMemo } from 'react';
-import * as S from '@style/comp/ProfileFieldCard.styled';
+import * as S from '@style/comp/Card/ProfileFieldCard.styled';
 import { useRecoilState } from 'recoil';
 import { editingIdAtom } from '@store/app.atoms';
 import { HiExclamationCircle } from 'react-icons/hi';
-import { Loading } from './Loading';
+import { Loading } from '../Loading';
 
 interface Props {
   name: string;

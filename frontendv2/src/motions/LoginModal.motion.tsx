@@ -2,7 +2,7 @@ import React, { useRef, forwardRef } from 'react';
 import { Transition, Variants } from 'framer-motion';
 import {
   StyledModalWrapper  
-} from '@style/comp/LoginModal.styled';
+} from '@style/comp/Modal/LoginModal.styled';
 
 interface IModalWrapperProps {
   children: React.ReactNode;

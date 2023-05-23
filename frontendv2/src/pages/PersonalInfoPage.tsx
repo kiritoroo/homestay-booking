@@ -3,7 +3,7 @@ import * as S from '@style/page/PersonalInfoPage.styled';
 import { Header } from '@comp/Header';
 import { MdOutlineNavigateNext } from 'react-icons/md';
 import { useNavigate } from 'react-router-dom';
-import { ProfileFieldCard } from '@comp/ProfileFieldCard';
+import { ProfileFieldCard } from '@comp/Card/ProfileFieldCard';
 import { IUserUpdateRequestBody } from '@store/user/user.schema';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { authSelector } from '@store/user/user.selectors';

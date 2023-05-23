@@ -3,7 +3,7 @@ import { Transition, Variants } from 'framer-motion';
 import {
   StyledBeforeButton,
   StyledNextButton
-} from '@style/comp/HomestayCard.styled';
+} from '@style/comp/Card/HomestayCard.styled';
 
 interface IBeforeButtonProps {
   children: React.ReactNode

@@ -6,7 +6,8 @@
       "@style/*": ["src/styles/*"],
       "@motion/*": ["src/motions/*"],
       "@type/*": ["src/types/*"],
-      "@store/*": ["src/stores/*"]
+      "@store/*": ["src/stores/*"],
+      "@util/*": ["src/utils/*"]
     }
   }
 }

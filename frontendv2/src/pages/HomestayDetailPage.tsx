@@ -1,22 +1,24 @@
-import React, { useCallback, useLayoutEffect, useMemo, useState } from "react";
+import React, { useCallback, useLayoutEffect, useMemo, useState, useEffect } from "react";
 import * as S from '@style/page/HomestayDetailPage.styled';
 import { Header } from "@comp/Header";
 import { useRecoilValue } from "recoil";
 import { useHomestayActions } from "@store/homestay/homestay.actions";
 import { useParams } from "react-router-dom";
-import { FeedbackCard } from "@comp/FeedbackCard";
+import { FeedbackCard } from "@comp/Card/FeedbackCard";
 import { BsStarFill } from "react-icons/bs";
 import { IHomestayGetByIDRequestParams, IHomestayGetByIDResponse } from "@store/homestay/homestay.schema";
-import { FeedbackList } from "@comp/FeedbackList";
+import { FeedbackList } from "@comp/List/FeedbackList";
 import { MdOutlineBed, MdSettingsAccessibility, MdOutlineBathroom, MdOutlineWorkOutline, MdOutlineDoorFront, MdOutlineNavigateNext, MdPets, MdWifi, MdWorkOutline, MdOutlineDeck, MdCameraOutdoor } from "react-icons/md";
 import { HiOutlineHome } from "react-icons/hi";
-import { BookingModal } from "@comp/BookingModal";
+import { BookingModal } from "@comp/Modal/BookingModal";
 import { TbCooker } from "react-icons/tb";
+import { HomestayDetailSkeleton } from "@comp/Skeleton/HomestayDetail.skeleton";
 
 export default function HomestayDetailPage() {
   const { id: homestayId } = useParams();
   const homestayActions = useHomestayActions();
   const [homestayData, setHomestayData] = useState<IHomestayGetByIDResponse | null>(null);
+  const [isSkeleton, setIsSkeleton] = useState(true);
   
   const homestayGetByIDRequestParams = useMemo<IHomestayGetByIDRequestParams> (() => ({
     page_id: 1,
@@ -53,10 +55,19 @@ export default function HomestayDetailPage() {
       })
   }, [])
 
+  useEffect(() => {
+    setTimeout(() => {
+      setIsSkeleton(false);
+    }, ((800)));
+  }, [])
+
   return (
     <S.StyledContainer>
       <Header/>
 
+      { isSkeleton
+      ? ( <HomestayDetailSkeleton/> )
+      :(
       <S.StyledContentWrapper>
         <S.StyledImageListWrapper>
           <S.StyledMainImage src={images[0]}/>
@@ -220,7 +231,7 @@ export default function HomestayDetailPage() {
 
         <FeedbackList feedbacksData={homestayData ? homestayData.homestays[0].list_of_feedbacks.feedbacks : []}/>
             
-      </S.StyledContentWrapper>
+      </S.StyledContentWrapper>)}
     </S.StyledContainer>
   )
 }

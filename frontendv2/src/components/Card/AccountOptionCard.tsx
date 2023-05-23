@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react';
-import * as S from '@style/comp/AccountOptionCard.styled';
+import * as S from '@style/comp/Card/AccountOptionCard.styled';
 import { useNavigate } from 'react-router-dom';
 
 interface Props {

@@ -1,6 +1,6 @@
 import { IFeedBackSchema } from '@store/feedback/feedback.schema';
 import React, { useCallback, useState } from 'react';
-import * as S from '@style/comp/FeedbackCard.styled';
+import * as S from '@style/comp/Card/FeedbackCard.styled';
 import { MdOutlineNavigateNext } from 'react-icons/md';
 import { IUserSchema } from '@store/user/user.schema';
 

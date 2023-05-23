@@ -1,10 +1,14 @@
-import React from "react";
-import * as S from "@style/comp/BookingModal.styled";
+import React, { useCallback } from "react";
+import * as S from "@style/comp/Modal/BookingModal.styled";
 import { BiDollar } from "react-icons/bi";
 import { IHomestaySchema } from "@store/homestay/homestay.schema";
 import { BsStarFill } from "react-icons/bs";
 import { MdExpandMore, MdFlag } from "react-icons/md";
 import { SlDiamond } from "react-icons/sl";
+import { CalendarModal } from "./CalendarModal";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { endDatePickedAtom, isShowCalendarModalAtom, startDatePickedAtom } from "@store/app.atoms";
+import * as formatUtils from "@util/FormatUtils";
 
 interface Props {
   price: number;
@@ -14,6 +18,13 @@ interface Props {
 
 export const BookingModal = (props: Props) => {
   const { price, rating, feedbackCount } = props;
+  const [isShowCalendarModal, setIsShowCalendarModal] = useRecoilState(isShowCalendarModalAtom);
+  const startDatePicked = useRecoilValue(startDatePickedAtom);
+  const endDatePicked = useRecoilValue(endDatePickedAtom);
+
+  const handleDateInfoMouseClick = useCallback(() => {
+    setIsShowCalendarModal(true);
+  }, [])
 
   return (
     <S.StyledContainer>
@@ -24,24 +35,26 @@ export const BookingModal = (props: Props) => {
             <S.StyledPrice>{ price}</S.StyledPrice> &nbsp;/ đêm
           </S.StyledPriceWrapper>
 
-          <S.StyledRatingWrapper>
-            <BsStarFill size="12px" color="#7D97B8"/> 
-            <S.StyledRating>{ rating }</S.StyledRating>
-          </S.StyledRatingWrapper>
-          <S.StyledFeedBackCountWrapper>
-            ·
-            <S.StyledFeedbackCount>{feedbackCount} đánh giá</S.StyledFeedbackCount>
-          </S.StyledFeedBackCountWrapper>
+          <S.StyledHomestayInfoFlexHoz>
+            <S.StyledRatingWrapper>
+              <BsStarFill size="12px" color="#7D97B8"/> 
+              <S.StyledRating>{ rating }</S.StyledRating>
+            </S.StyledRatingWrapper>
+            <S.StyledFeedBackCountWrapper>
+              ·
+              <S.StyledFeedbackCount>{feedbackCount} đánh giá</S.StyledFeedbackCount>
+            </S.StyledFeedBackCountWrapper>
+          </S.StyledHomestayInfoFlexHoz>
         </S.StyledHomestayInfoWrapper>
 
-        <S.StyledDateInfoWrapper>
+        <S.StyledDateInfoWrapper id="calendar-popup" onClick={ handleDateInfoMouseClick }>
           <S.StyledDateCheckInWrapper>
             <S.StyledDateLabel>NHẬN PHÒNG</S.StyledDateLabel>
-            <S.StyledDateValue>27/05/2023</S.StyledDateValue>          
+            <S.StyledDateValue>{ startDatePicked ? formatUtils.formatDate(startDatePicked) : "Thêm ngày" }</S.StyledDateValue>          
           </S.StyledDateCheckInWrapper>
           <S.StyledDateCheckOutWrapper>
             <S.StyledDateLabel>TRẢ PHÒNG</S.StyledDateLabel>
-            <S.StyledDateValue>01/06/2023</S.StyledDateValue>
+            <S.StyledDateValue>{ endDatePicked ? formatUtils.formatDate(endDatePicked) : "Thêm ngày" }</S.StyledDateValue>
           </S.StyledDateCheckOutWrapper>
         </S.StyledDateInfoWrapper>
         <S.StyledLine/>
@@ -56,6 +69,8 @@ export const BookingModal = (props: Props) => {
         <S.StykedButtonBooking>
           Đặt phòng
         </S.StykedButtonBooking>
+
+        { isShowCalendarModal && <CalendarModal/> }
       </S.StyledBookingContainer>
 
       <S.StyledHintContainer>

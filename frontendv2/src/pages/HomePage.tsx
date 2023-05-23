@@ -3,7 +3,7 @@ import { Promotion } from "@comp/Promotion";
 import { Header } from "@comp/Header";
 import { MainFooter } from "@comp/MainFooter";
 import * as S from '@style/page/HomePage.styled';
-import { HomestayList } from "@comp/HomestayList";
+import { HomestayList } from "@comp/List/HomestayList";
 
 export default function HomePage() {
 

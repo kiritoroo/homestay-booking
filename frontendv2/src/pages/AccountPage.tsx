@@ -3,7 +3,7 @@ import { Header } from "@comp/Header";
 import * as S from '@style/page/AccountPage.styled';
 import { useRecoilValue } from 'recoil';
 import { authSelector } from '@store/user/user.selectors';
-import { AccountOptionCard } from '@comp/AccountOptionCard';
+import { AccountOptionCard } from '@comp/Card/AccountOptionCard';
 import { RiAccountPinBoxLine, RiShieldUserLine} from 'react-icons/ri';
 import { MdOutlinePayments } from 'react-icons/md';
 import { HiOutlineAnnotation } from 'react-icons/hi';

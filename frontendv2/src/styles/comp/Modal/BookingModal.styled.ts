@@ -24,6 +24,12 @@ export const StyledHomestayInfoWrapper = styled.div`
   margin-bottom: 10px;
 `
 
+export const StyledHomestayInfoFlexHoz = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`
+
 export const StyledPriceWrapper = styled.div`
   font-size: 15px;
   font-weight: 300;
@@ -35,7 +41,7 @@ export const StyledPriceWrapper = styled.div`
 `
 
 export const StyledPrice = styled.span`
-  font-size: 16px;
+  font-size: 20px;
   font-weight: 600;
 `
 
@@ -98,21 +104,25 @@ export const StyledDateCheckInWrapper = styled.div`
   padding: 15px;
   width: 180px;
   border-right: 1px solid #DDDDDD;
+  pointer-events: none;
 `
 
 export const StyledDateCheckOutWrapper = styled.div`
   padding: 15px;
   width: 180px;
+  pointer-events: none;
 `
 
 export const StyledDateLabel = styled.div`
   font-size: 12px;
   font-weight: 600;
+  pointer-events: none;
 `
 
 export const StyledDateValue = styled.div`
   font-size: 15px;
   font-weight: 300;
+  pointer-events: none;
 `
 
 export const StyledLine = styled.div`

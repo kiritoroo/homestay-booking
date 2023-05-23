@@ -1,7 +1,7 @@
 import React, { useState, useCallback, useMemo, useEffect } from 'react';
 import { IHomestaySchema } from '@store/homestay/homestay.schema';
 import { MdNavigateNext, MdNavigateBefore } from 'react-icons/md';
-import * as S from '@style/comp/HomestayCard.styled';
+import * as S from '@style/comp/Card/HomestayCard.styled';
 import * as M from '@motion/HomestayCard.motion';
 import { AnimatePresence } from 'framer-motion';
 import { BiDollar } from "react-icons/bi";
@@ -9,6 +9,7 @@ import { BsStarFill, BsFillHeartFill } from "react-icons/bs";
 import { useNavigate } from 'react-router-dom';
 import Skeleton, { SkeletonTheme } from 'react-loading-skeleton';
 import { useSetRecoilState } from 'recoil';
+import { HomestayCardSkeleton } from '@comp/Skeleton/HomestayCard.skeleton';
 
 interface Props {
   homestay: IHomestaySchema
@@ -66,15 +67,7 @@ export const HomestayCard = (props: Props) => {
       onMouseLeave={ handleMouseLeave }>
 
       { isSkeleton 
-      ? (
-      <S.StyledContainer>
-        <SkeletonTheme baseColor="#f2f7fc" highlightColor="#f8fbfd">
-          <Skeleton count={1} width={"28vw"} height={"25vw"}/>
-          <Skeleton count={1} inline width={250} height={20}/>
-          <Skeleton count={1} width={100} height={20} style={{ marginLeft: 10 }}/>
-          <Skeleton count={1} width={200} height={30}/>
-        </SkeletonTheme>
-      </S.StyledContainer> ) 
+      ? ( <HomestayCardSkeleton/> ) 
       : (
       <React.Fragment>
         <S.StyledImageWrapper>
