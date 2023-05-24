@@ -9,9 +9,11 @@ import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { authSelector } from '@store/user/user.selectors';
 import { editingIdAtom } from '@store/app.atoms';
 import { useUserActions } from '@store/user/user.actions';
+import { Loading } from '@comp/Loading';
 
 export default function PersonalInfoPage() {
   const userActions = useUserActions();
+  const [isloading, setIsLoading] = useState<boolean>(true);
 
   const navigate = useNavigate();
   const { user } = useRecoilValue(authSelector);
@@ -80,10 +82,22 @@ export default function PersonalInfoPage() {
     ))
   ), [fieldData])
 
+  useEffect(() => {
+    setTimeout(() => {
+      setIsLoading(false);
+    }, ((300)));
+  }, [])
+
   return (
     <S.StyledContainer>
       <Header/>
 
+      {isloading 
+      ? (
+      <S.StyledContentWrapper style={{ height: isloading ? "80vh" : "auto" }}>
+        <Loading size={12}/>
+      </S.StyledContentWrapper>)
+      : (
       <S.StyledContentWrapper>
         <S.StyledHeadWrapper>
           <S.StyledNavigateWrapper>
@@ -100,7 +114,7 @@ export default function PersonalInfoPage() {
         <S.StyledFieldListWrapper>
           { renderedFieldList }
         </S.StyledFieldListWrapper>
-      </S.StyledContentWrapper>
+      </S.StyledContentWrapper>)}
     </S.StyledContainer>
   )
 }

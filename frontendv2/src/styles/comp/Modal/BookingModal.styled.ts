@@ -9,6 +9,7 @@ export const StyledContainer = styled.div`
 `
 
 export const StyledBookingContainer = styled.div`
+  position: relative;
   border: 1px solid rgb(221, 221, 221);
   border-radius: 12px;
   padding: 24px;
@@ -154,11 +155,13 @@ export const StyledGuestInfoWrapper = styled.div`
 export const StyledGuestLabel = styled.div`
   font-size: 12px;
   font-weight: 600;
+  pointer-events: none;
 `
 
 export const StyledGuestValue = styled.div`
   font-size: 15px;
   font-weight: 300;
+  pointer-events: none;
 `
 
 export const StyledGuestInfoExpandIconWrapper = styled.div`
@@ -166,6 +169,7 @@ export const StyledGuestInfoExpandIconWrapper = styled.div`
   right: 15px;
   top: 0;
   transform: translateY(50%);
+  pointer-events: none;
 `
 
 export const StykedButtonBooking = styled.button`
@@ -180,14 +184,15 @@ export const StykedButtonBooking = styled.button`
   user-select: none;
   border: none;
   transition: transform 0.2s ease;
-  font-size: 15px;
+  font-size: 16px;
   
   &:hover {
     cursor: pointer;
   }
 
   &:active {
-    transform: scale(0.9);
+    background-color: #A8B9CF;
+    transform: scale(0.95);
   }
 `
 

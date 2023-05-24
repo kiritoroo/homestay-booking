@@ -16,11 +16,12 @@ export const StyledContentWrapper = styled.div`
 export const StyledHeadWrapper = styled.div`
   width: 650px;
   margin-top: 50px;
-  margin-bottom: 50px;
+  margin-bottom: 10px;
 `
 
 export const StyledTitle = styled.div`
   font-size: 30px;
+  font-weight: 600;
   line-height: 55px;
 `
 
@@ -33,13 +34,15 @@ export const StyledNameInfo = styled.span`
   font-weight: 600;
 `
 
-export const StyledEmailInfo = styled.span`
+export const StyledUserHint = styled.span`
   font-weight: 300;
 `
 
-export const StyledLinkInfo = styled.span`
-  font-weight: 500;
+export const StyledLinkHint = styled.span`
+  font-weight: 300;
+  font-size: 14px;
   text-decoration: underline;
+  margin-left: 20px;
 
   &:hover {
     cursor: pointer;
@@ -50,12 +53,18 @@ export const StyledLinkInfo = styled.span`
   }
 `
 
-export const StyledOptionListWrapper = styled.div`
-  width: 650px;
+export const StyledProHint = styled.div`
+  font-weight: 200;
+  font-size: 14px;
+`
+
+export const StyledPromotionListWrapper = styled.div`
   display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 20px;
+  gap: 40px;
+  margin-top: 40px;
+  margin-bottom: 40px;
+  margin-bottom: 100px;
 `

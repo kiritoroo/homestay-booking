@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { motion } from "framer-motion";
 
 export const StyledContainer = styled.div`
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   width: 100vw;
@@ -99,7 +99,8 @@ export const StyledButtonLogin = styled.button`
   }
 
   &:active {
-    transform: scale(0.9);
+    background-color: #A8B9CF;
+    transform: scale(0.95);
   }
 `
 

@@ -5,12 +5,13 @@ export const StyledContainer = styled.div`
 `
 
 export const StyledContentWrapper = styled.div`
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: start;
   justify-content: center;
-  margin-left: 50px;
-  margin-right: 50px;
+  margin-left: 8vw;
+  margin-right: 8vw;
 `
 
 export const StyledHeadWrapper = styled.div`

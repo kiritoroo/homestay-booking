@@ -10,6 +10,8 @@ import HomePage from "./pages/HomePage"
 import AccountPage from "./pages/AccountPage"
 import PersonalInfoPage from "./pages/PersonalInfoPage"
 import HomestayDetailPage from "./pages/HomestayDetailPage"
+import BookingPage from "./pages/BookingPage"
+import PromotionPage from "./pages/PromotionPage"
 
 export const App = () => {
   const auth = useRecoilValue(authSelector);
@@ -27,8 +29,10 @@ export const App = () => {
           <Route element={<ProtectedRoute isAuth={auth.isAuth}/>}>
             <Route path="/account" element={<AccountPage/>}/>
             <Route path="/account/personal-info" element={<PersonalInfoPage/>}/>
-            <Route path="/homestay/:id" element={<HomestayDetailPage/>}/>
+            <Route path="/booking" element={<BookingPage/>}/>
+            <Route path="/promotion" element={<PromotionPage/>}/>
           </Route>
+          <Route path="/homestay/:id" element={<HomestayDetailPage/>}/>
         </Routes>
       </BrowserRouter>
     </React.Fragment>

@@ -13,6 +13,7 @@ import { HiOutlineHome } from "react-icons/hi";
 import { BookingModal } from "@comp/Modal/BookingModal";
 import { TbCooker } from "react-icons/tb";
 import { HomestayDetailSkeleton } from "@comp/Skeleton/HomestayDetail.skeleton";
+import { CalendarPick } from "@comp/CalendarPick";
 
 export default function HomestayDetailPage() {
   const { id: homestayId } = useParams();
@@ -72,7 +73,7 @@ export default function HomestayDetailPage() {
         <S.StyledImageListWrapper>
           <S.StyledMainImage src={images[0]}/>
           <S.StyledImageGrid>
-            {images.reverse().map((url, index) => (
+            {images.map((url, index) => (
               <S.StyledImage key={index} src={url}/>
             ))}
           </S.StyledImageGrid>
@@ -221,12 +222,18 @@ export default function HomestayDetailPage() {
                 <S.StyledHomestayInfoTitle>Camera an ninh trong nhà</S.StyledHomestayInfoTitle>
               </S.StyledHomestaySmallInfoWrapper>
             </S.StyledHomestaySmallInfoListWrapper>
+
+            <S.StyledLine/>
+
+            <CalendarPick/>
           </S.StyledHomestayInfoContainer>
 
           <BookingModal 
             price={homestayData ? homestayData.homestays[0].homestay.price : 0}
             rating={5}
-            feedbackCount={homestayData ? homestayData.homestays[0].list_of_feedbacks.feedbacks.length : 0}/>
+            feedbackCount={homestayData ? homestayData.homestays[0].list_of_feedbacks.feedbacks.length : 0}
+            maxGuest={homestayData ? homestayData.homestays[0].homestay.capacity : 0}
+            homestay={homestayData ? homestayData.homestays[0].homestay : null}/>
         </S.StyledMidSectionContainer>
 
         <FeedbackList feedbacksData={homestayData ? homestayData.homestays[0].list_of_feedbacks.feedbacks : []}/>

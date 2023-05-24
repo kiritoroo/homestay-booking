@@ -11,14 +11,12 @@ export const Loading = React.memo((props: IProps) => {
   const { size } = props;
 
   return (
-    <React.Fragment>
-      <M.MotionContainer>
-        <M.MotionDotWrapper size={size}>
-          <M.MotionDot size={size}/>
-          <M.MotionDot size={size}/>
-          <M.MotionDot size={size}/>
-        </M.MotionDotWrapper>
-      </M.MotionContainer>
-    </React.Fragment>
+    <M.MotionContainer>
+      <M.MotionDotWrapper size={size}>
+        <M.MotionDot size={size}/>
+        <M.MotionDot size={size}/>
+        <M.MotionDot size={size}/>
+      </M.MotionDotWrapper>
+    </M.MotionContainer>
   )
 })

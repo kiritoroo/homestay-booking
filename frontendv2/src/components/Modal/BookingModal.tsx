@@ -1,30 +1,90 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useEffect } from "react";
 import * as S from "@style/comp/Modal/BookingModal.styled";
 import { BiDollar } from "react-icons/bi";
 import { IHomestaySchema } from "@store/homestay/homestay.schema";
 import { BsStarFill } from "react-icons/bs";
-import { MdExpandMore, MdFlag } from "react-icons/md";
+import { MdExpandLess, MdExpandMore, MdFlag } from "react-icons/md";
 import { SlDiamond } from "react-icons/sl";
-import { CalendarModal } from "./CalendarModal";
-import { useRecoilState, useRecoilValue } from "recoil";
-import { endDatePickedAtom, isShowCalendarModalAtom, startDatePickedAtom } from "@store/app.atoms";
+import { CalendarPopup } from "../Popup/CalendarPopup";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import { endDatePickedAtom, guestPickedAtom, homestayPickedAtom, isShowCalendarPopupAtom, isShowGuestPickPopupAtom, isShowLoginModalAtom, startDatePickedAtom } from "@store/app.atoms";
 import * as formatUtils from "@util/FormatUtils";
+import { dateRangePickedSelector } from "@store/app.selectors";
+import { GuestPickPopup } from "@comp/Popup/GuestPickPopup";
+import { authSelector } from "@store/user/user.selectors";
+import { createSearchParams, useNavigate, useSearchParams } from "react-router-dom";
 
 interface Props {
   price: number;
   rating: number;
   feedbackCount: number;
+  maxGuest: number;
+  homestay: IHomestaySchema | null;
 }
 
 export const BookingModal = (props: Props) => {
-  const { price, rating, feedbackCount } = props;
-  const [isShowCalendarModal, setIsShowCalendarModal] = useRecoilState(isShowCalendarModalAtom);
+  const { price, rating, feedbackCount, maxGuest, homestay } = props;
+  const [isShowCalendarPopup, setIsShowCalendarPopup] = useRecoilState(isShowCalendarPopupAtom);
+  const [isShowGuestpickPopup, setIsShowGuestpickPopup] = useRecoilState(isShowGuestPickPopupAtom);
+  const setIsShowLoginModal = useSetRecoilState(isShowLoginModalAtom);
+
+  const { user } = useRecoilValue(authSelector);
+  const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
+
   const startDatePicked = useRecoilValue(startDatePickedAtom);
   const endDatePicked = useRecoilValue(endDatePickedAtom);
+  const dateRangePicked = useRecoilValue(dateRangePickedSelector);
+  const [guestPicked, setGuestPicked] = useRecoilState(guestPickedAtom);
+  const setHomestayPicked = useSetRecoilState(homestayPickedAtom);
 
   const handleDateInfoMouseClick = useCallback(() => {
-    setIsShowCalendarModal(true);
+    setIsShowCalendarPopup(true);
   }, [])
+
+  const handleGuestInfoMouseClick = useCallback(() => {
+    setIsShowGuestpickPopup((prev) => !prev);
+  }, [])
+
+  const handleBookingButtonMouseClick = useCallback(() => {
+    if (!endDatePicked || !startDatePicked) {
+      setIsShowCalendarPopup(true);
+      return
+    }
+    if (!user) {
+      setIsShowLoginModal(true);
+      return
+    }
+
+    setHomestayPicked(homestay);
+    navigate({
+      pathname: "/booking",
+      search: createSearchParams({
+        homestayId: homestay?.id.toString() ?? "",
+        checkIn: dateRangePicked.formatStrikeStartDate?.toString() ?? "",
+        checkOut: dateRangePicked.formatStrikeEndDate?.toString() ?? "",
+        numberOfGuests: guestPicked.toString(),
+        feedbackCount: feedbackCount.toString(),
+      }).toString()
+    });
+  }, [endDatePicked, startDatePicked])
+
+  useEffect(() => {
+    if ([...searchParams].length != 0) {
+      const paramNumberOfGuest = searchParams.get("numberOfGuest");
+
+      if (paramNumberOfGuest != null) {
+        setGuestPicked(Number(paramNumberOfGuest));
+        setSearchParams((prev) => 
+          Object.fromEntries([...searchParams, ["numberOfGuest", paramNumberOfGuest]])
+        )
+      } else {
+        setSearchParams((prev) => 
+          Object.fromEntries([...searchParams, ["numberOfGuest", guestPicked]])
+        )
+      }
+    }
+  }, [searchParams])
 
   return (
     <S.StyledContainer>
@@ -47,30 +107,31 @@ export const BookingModal = (props: Props) => {
           </S.StyledHomestayInfoFlexHoz>
         </S.StyledHomestayInfoWrapper>
 
-        <S.StyledDateInfoWrapper id="calendar-popup" onClick={ handleDateInfoMouseClick }>
+        <S.StyledDateInfoWrapper id="calendar-popup1" onClick={ handleDateInfoMouseClick }>
           <S.StyledDateCheckInWrapper>
             <S.StyledDateLabel>NHẬN PHÒNG</S.StyledDateLabel>
-            <S.StyledDateValue>{ startDatePicked ? formatUtils.formatDate(startDatePicked) : "Thêm ngày" }</S.StyledDateValue>          
+            <S.StyledDateValue>{ startDatePicked ? dateRangePicked.formatSliceStartDate : "Thêm ngày" }</S.StyledDateValue>          
           </S.StyledDateCheckInWrapper>
           <S.StyledDateCheckOutWrapper>
             <S.StyledDateLabel>TRẢ PHÒNG</S.StyledDateLabel>
-            <S.StyledDateValue>{ endDatePicked ? formatUtils.formatDate(endDatePicked) : "Thêm ngày" }</S.StyledDateValue>
+            <S.StyledDateValue>{ endDatePicked ? dateRangePicked.formatSliceEndDate : "Thêm ngày" }</S.StyledDateValue>
           </S.StyledDateCheckOutWrapper>
         </S.StyledDateInfoWrapper>
         <S.StyledLine/>
-        <S.StyledGuestInfoWrapper>
+        <S.StyledGuestInfoWrapper id="guestpick-popup" onClick={ handleGuestInfoMouseClick }>
           <S.StyledGuestLabel>KHÁCH</S.StyledGuestLabel>
-          <S.StyledGuestValue>1 khách</S.StyledGuestValue>
+          <S.StyledGuestValue>{guestPicked } khách</S.StyledGuestValue>
           <S.StyledGuestInfoExpandIconWrapper>
-            <MdExpandMore size="25px"/>
+            { isShowGuestpickPopup ? <MdExpandLess size="25px"/> : <MdExpandMore size="25px"/> }
           </S.StyledGuestInfoExpandIconWrapper>
         </S.StyledGuestInfoWrapper>
 
-        <S.StykedButtonBooking>
-          Đặt phòng
+        <S.StykedButtonBooking id="calendar-popup2" onClick={ handleBookingButtonMouseClick }>
+          { endDatePicked ? "Đặt phòng" : "Kiểm tra tình trạng còn phòng" }
         </S.StykedButtonBooking>
 
-        { isShowCalendarModal && <CalendarModal/> }
+        { isShowCalendarPopup && <CalendarPopup/> }
+        { isShowGuestpickPopup && <GuestPickPopup maxGuest={ maxGuest }/> }
       </S.StyledBookingContainer>
 
       <S.StyledHintContainer>

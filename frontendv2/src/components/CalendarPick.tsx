@@ -1,19 +1,16 @@
+import { endDatePickedAtom, startDatePickedAtom } from '@store/app.atoms';
+import { dateRangePickedSelector } from '@store/app.selectors';
 import React, { useCallback, useRef, useState, ChangeEvent, useEffect } from 'react';
-import * as S from "@style/comp/Modal/CalendarModal.styled";
-import Calendar from "react-calendar";
-import { LooseValue } from 'react-calendar/dist/cjs/shared/types';
-import { OnArgs } from 'react-calendar/dist/cjs/shared/types';
+import { LooseValue, OnArgs } from 'react-calendar/dist/cjs/shared/types';
+import { useRecoilState, useRecoilValue } from 'recoil';
+import * as S from "@style/comp/CalendarPick.styled";
+import Calendar from 'react-calendar';
+import { useSearchParams } from 'react-router-dom';
 import * as formatUtils from "@util/FormatUtils";
-import { useRecoilState } from 'recoil';
-import { endDatePickedAtom, isShowCalendarModalAtom, startDatePickedAtom } from '@store/app.atoms';
 
 interface Props {}
 
-export const CalendarModal = (props: Props) => {
-  const [isShowCalendarModal, setIsShowCalendarModal] = useRecoilState(isShowCalendarModalAtom);
-  const containerRef = useRef<HTMLDivElement>(null);
-  const modalRef = useRef<HTMLDivElement>(null);
-
+export const CalendarPick = (props: Props) => {
   const [date, setDate] = useState<Date>(new Date());
   const [selectDateRange, setSelectDateRange] = useState<LooseValue | undefined>(undefined)
   const [activeStartMonth, setActivateStartMonth] = useState<Date>(date)
@@ -24,6 +21,9 @@ export const CalendarModal = (props: Props) => {
 
   const [startDatePicked, setStartDatePicked] = useRecoilState(startDatePickedAtom);
   const [endDatePicked, setEndDatePicked] = useRecoilState(endDatePickedAtom);
+  const dateRangePicked = useRecoilValue(dateRangePickedSelector);
+
+  const [searchParams, setSearchParams] = useSearchParams();
 
   const handlePrevMonthClick = useCallback(() => {
     setActivateStartMonth((prev) => new Date(
@@ -68,9 +68,10 @@ export const CalendarModal = (props: Props) => {
           return
         }
         setEndDatePicked(event.value[1]);
-        setTimeout(() => {
-          setIsShowCalendarModal(false);
-        }, 200);
+        (event.value[0] && event.value[1] &&  
+          setSearchParams({
+            'checkIn': formatUtils.formatDateStrike(event.value[0]!),
+            'checkOut': formatUtils.formatDateStrike(event.value[1]!)}));
       } else {
         if (event.value?.getDate() == startDatePicked?.getDate() || event.value?.getDate() == endDatePicked?.getDate()) {
           setSelectDateRange(null);
@@ -79,6 +80,7 @@ export const CalendarModal = (props: Props) => {
           return
         }
         setStartDatePicked(event.value as Date);
+        setSearchParams({'checkIn': formatUtils.formatDateStrike(event.value!)});
       }
     }
   }, [startDatePicked, endDatePicked])
@@ -87,56 +89,47 @@ export const CalendarModal = (props: Props) => {
     setSelectDateRange(null);
     setStartDatePicked(null);
     setEndDatePicked(null);
+    setSearchParams({});
   }, [])
-
-  const handleModalClose = useCallback((event: MouseEvent) => {
-    // if (containerRef.current && modalRef.current) {
-    //   if (!modalRef.current.contains(event.target as Node)) {
-    //     setIsShowCalendarModal(false)
-    //   }
-    // }
-
-    if (modalRef.current) {      
-      if (!modalRef.current.contains(event.target as Node) && (event.target as HTMLElement).id != "calendar-popup") {
-        setIsShowCalendarModal(false);
-      }
-    }
-  }, [modalRef.current])
 
   useEffect(() => {
     setSelectDateRange([startDatePicked, endDatePicked])
-    document.addEventListener("click", (e) => handleModalClose(e))
+  }, [startDatePicked, endDatePicked])
+
+  useEffect(() => {
+    const paramStartDatePicked = searchParams.get("checkIn");
+    const paramEndDatePicked = searchParams.get("checkOut");
+
+    if (paramStartDatePicked != null && paramEndDatePicked != null) {
+      const dateObjStart = formatUtils.stringStrike2Day(paramStartDatePicked);
+      const dateObjEnd = formatUtils.stringStrike2Day(paramEndDatePicked);
+      
+      setStartDatePicked(dateObjStart);
+      setEndDatePicked(dateObjEnd);
+      setSelectDateRange([dateObjStart, dateObjEnd])
+      setSearchParams({
+        'checkIn': paramStartDatePicked,
+        'checkOut': paramEndDatePicked});
+    } else {
+      setSelectDateRange([startDatePicked, endDatePicked])
+      setSearchParams({
+        'checkIn': dateRangePicked.formatStrikeStartDate?.toString() ?? "",
+        'checkOut': dateRangePicked.formatStrikeEndDate?.toString() ?? ""});
+    }
 
     return () => {
-      document.removeEventListener("click", (e) => handleModalClose(e))
     }
-  })
-
-  const handleCloseButtonMouseClick = useCallback(() => {
-    setIsShowCalendarModal(false);
   }, [])
 
   return (
-    <S.StyledContainer ref={ containerRef }>
-      <S.StyledModalWrapper ref={ modalRef }>
+    <S.StyledContainer>
+      <S.StyledModalWrapper>
         <S.StyledHeaderWrapper>
           <S.StyledHeaderLeftWrapper>
-            <S.StyledHeaderTitle>Chọn ngày</S.StyledHeaderTitle>
-            <S.StyledHeaderHint>Thêm ngày để biết giá chính xác</S.StyledHeaderHint>
+            <S.StyledHeaderTitle> { dateRangePicked.dateCount ? dateRangePicked.dateCount + " đêm" : "Chọn ngày" } </S.StyledHeaderTitle>
+            <S.StyledHeaderHint> { (startDatePicked && endDatePicked) ? (dateRangePicked.formatStringStartDate + " - " + dateRangePicked.formatStringEndDate) : "Thêm ngày để biết giá chính xác" } </S.StyledHeaderHint>
           </S.StyledHeaderLeftWrapper>
-          <S.StyledHeaderRightWrapper>
-            <S.StyledDateInfoWrapper>
-              <S.StyledDateCheckInWrapper isPicking={startDatePicked == null}>
-                <S.StyledDateLabel>NHẬN PHÒNG</S.StyledDateLabel>
-                <S.StyledDateValue>{ startDatePicked ? formatUtils.formatDate(startDatePicked) : "Thêm ngày" }</S.StyledDateValue>          
-              </S.StyledDateCheckInWrapper>
-              { startDatePicked && endDatePicked && <S.StyledLineVez/> }
-              <S.StyledDateCheckOutWrapper isPicking={startDatePicked != null && endDatePicked == null}>
-                <S.StyledDateLabel>TRẢ PHÒNG</S.StyledDateLabel>
-                <S.StyledDateValue>{ endDatePicked ? formatUtils.formatDate(endDatePicked) : "Thêm ngày" }</S.StyledDateValue>
-              </S.StyledDateCheckOutWrapper>
-            </S.StyledDateInfoWrapper>
-          </S.StyledHeaderRightWrapper>
+          <S.StyledHeaderRightWrapper></S.StyledHeaderRightWrapper>
         </S.StyledHeaderWrapper>
 
         <S.StyledCalendarWrapper>
@@ -158,9 +151,8 @@ export const CalendarModal = (props: Props) => {
 
         <S.StyledFooterWrapper>
           <S.StyledClearDate onClick={handleDateClear }>Xóa ngày</S.StyledClearDate>
-          <S.StyledClose onClick={ handleCloseButtonMouseClick }>Đóng</S.StyledClose>
         </S.StyledFooterWrapper>
       </S.StyledModalWrapper>
     </S.StyledContainer>
   )
-} 
+}

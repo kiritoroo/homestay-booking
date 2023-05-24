@@ -76,7 +76,7 @@ export const StyledHomestayInfoContainer = styled.div`
   flex-direction: column;
   align-items: start;
   justify-content: center;
-  max-width: 65vw;
+  max-width: 45vw;
 `
 
 export const StyledHomestayBigInfoListWrapper = styled.div`

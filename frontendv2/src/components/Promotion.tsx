@@ -10,7 +10,7 @@ export const Promotion = (props: Props) => {
     <M.MotionContainer>
       <S.StyledFlexWrapper>
         <S.StyledTitle>
-          Đặt phòng ngay với ưu đãi 50%
+          Đặt phòng ngay với ưu đãi lên tới 50%
         </S.StyledTitle>
         <S.StyledMoreLink>
           Tìm hiểu thêm

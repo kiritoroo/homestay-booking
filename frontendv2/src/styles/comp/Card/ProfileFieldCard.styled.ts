@@ -123,7 +123,8 @@ export const StyledSaveButton = styled.button`
   }
 
   &:active {
-    transform: scale(0.9);
+    background-color: #A8B9CF;
+    transform: scale(0.95);
   }
 `
 

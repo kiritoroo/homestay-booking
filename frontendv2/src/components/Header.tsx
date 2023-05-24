@@ -2,21 +2,22 @@ import React, { useState, useCallback } from "react";
 import * as S from '@style/comp/Header.styled';
 import { SiAirbnb } from 'react-icons/si'
 import { FaUserCircle, FaRegUserCircle, FaBars } from 'react-icons/fa';
-import { UserDropdown } from "./UserDropdown";
+import { UserNavigatePopup } from "./Popup/UserNavigatePopup";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { authSelector } from "@store/user/user.selectors";
 import { useNavigate } from 'react-router-dom';
+import { isShowUserPopupAtom } from "@store/app.atoms";
 
 interface Props {}
 
 export const Header = (props: Props) => {
-  const [isShowUserDropdown, setIsShowUserDopdown] = useState(false);
+  const [isShowUserPopup, setIsShowUserPopup] = useRecoilState(isShowUserPopupAtom);
 
   const auth = useRecoilValue(authSelector);
   const navigate = useNavigate();
   
   const handleUserWrapperMouseClick = useCallback(() => {
-    setIsShowUserDopdown((prev) => !prev)
+    setIsShowUserPopup((prev) => !prev)
   }, [])
 
   const handleLogoMouseClick = useCallback(() => {
@@ -33,22 +34,23 @@ export const Header = (props: Props) => {
             color={"#7D97B8"}/>
           <S.StyledLogoTitle>airute</S.StyledLogoTitle>
         </S.StyledLogoWrapper>
-        <S.StyledUserWrapper 
+        <S.StyledUserWrapper
+          id="user-popup" 
           onClick={ handleUserWrapperMouseClick }>
-          <FaBars/>
+          <FaBars style={{ pointerEvents: "none" }}/>
 
           { auth.isAuth 
             ? (<FaUserCircle 
               size={"35px"} 
               color={"#7D97B8"} 
-              style={{ marginLeft: "12px" }}/>)
+              style={{ marginLeft: "12px", pointerEvents: "none" }}/>)
             : (<FaUserCircle 
               size={"35px"} 
               color={"#bbbbbb"} 
-              style={{ marginLeft: "12px" }}/>)
+              style={{ marginLeft: "12px", pointerEvents: "none" }}/>)
           }
 
-          { isShowUserDropdown && <UserDropdown/> }
+          { isShowUserPopup && <UserNavigatePopup/> }
         </S.StyledUserWrapper>
       </S.StyledContainer>
     </React.Fragment>

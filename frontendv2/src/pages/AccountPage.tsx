@@ -1,4 +1,4 @@
-import React, { useRef, useMemo } from 'react';
+import React, { useRef, useMemo, useState, useEffect } from 'react';
 import { Header } from "@comp/Header";
 import * as S from '@style/page/AccountPage.styled';
 import { useRecoilValue } from 'recoil';
@@ -7,9 +7,11 @@ import { AccountOptionCard } from '@comp/Card/AccountOptionCard';
 import { RiAccountPinBoxLine, RiShieldUserLine} from 'react-icons/ri';
 import { MdOutlinePayments } from 'react-icons/md';
 import { HiOutlineAnnotation } from 'react-icons/hi';
+import { Loading } from '@comp/Loading';
 
 export default function AccountPage() {
   const { user } = useRecoilValue(authSelector);
+  const [isloading, setIsLoading] = useState<boolean>(true);
 
   const optionData = useRef([
     {
@@ -49,10 +51,21 @@ export default function AccountPage() {
     ))
   ), [optionData.current])
 
+  useEffect(() => {
+    setTimeout(() => {
+      setIsLoading(false);
+    }, ((300)));
+  }, [])
+
   return (
     <S.StyledContainer>
       <Header/>
-
+      {isloading
+      ? (
+      <S.StyledContentWrapper style={{ height: isloading ? "80vh" : "auto" }}>
+        <Loading size={12}/>
+      </S.StyledContentWrapper>)
+      : (
       <S.StyledContentWrapper>
         <S.StyledHeadWrapper>
           <S.StyledTitle>Tài khoản</S.StyledTitle>
@@ -66,7 +79,7 @@ export default function AccountPage() {
         <S.StyledOptionListWrapper>
           { renderedOptionList }
         </S.StyledOptionListWrapper>
-      </S.StyledContentWrapper>
+      </S.StyledContentWrapper>)}
     </S.StyledContainer>
   )
 }
