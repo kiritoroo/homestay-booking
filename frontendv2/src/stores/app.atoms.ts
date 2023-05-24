@@ -72,3 +72,13 @@ export const promotionCopyAtom = atom<string | null>({
   key: 'promotionCopyAtom',
   default: null
 })
+
+export const isShowCalendarModalAtom = atom<boolean>({
+  key: 'isShowCalendarModalAtom',
+  default: false
+})
+
+export const isShowGuestPickModalAtom = atom<boolean>({
+  key: 'isShowGuestPickModalAtom',
+  default: false
+})

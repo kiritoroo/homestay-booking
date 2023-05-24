@@ -7,7 +7,6 @@ export const StyledContainer = styled.div`
 export const StyledModalWrapper = styled.div`
   background: rgb(255, 255, 255);
   border-radius: 16px;
-  padding: 10px 32px 16px;
 `
 
 export const StyledHeaderWrapper = styled.div`

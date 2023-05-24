@@ -12,10 +12,13 @@ import { MdModeComment, MdKingBed } from "react-icons/md";
 import { BiDollar } from "react-icons/bi";
 import { usePromotionActions } from "@store/promotion/promotion.actions";
 import { IPromotionSchema } from "@store/promotion/promotion.schema";
-import { promotionPickedAtom } from "@store/app.atoms";
+import { isShowCalendarModalAtom, isShowGuestPickModalAtom, promotionPickedAtom } from "@store/app.atoms";
 import { RiPaypalFill, RiVisaFill } from "react-icons/ri";
 import { FaRegMoneyBillAlt } from "react-icons/fa";
 import { MainFooter } from "@comp/MainFooter";
+import { CalendarModal } from "@comp/Modal/CalendarModal";
+import { GuestPickModal } from "@comp/Modal/GuestPickModal";
+import { AnimatePresence } from "framer-motion";
 
 export default function BookingPage() {
   const [isloading, setIsLoading] = useState<boolean>(true);
@@ -27,6 +30,8 @@ export default function BookingPage() {
 
   const [proPicked, setProPicked] = useRecoilState(promotionPickedAtom);
   const bookingInfo = useRecoilValue(bookingInfoSelector);
+  const [isShowCalendarModal, setIsShowCalendarModal] = useRecoilState(isShowCalendarModalAtom);
+  const [isShowGuestPickModal, setIsShowGuestPickModal] = useRecoilState(isShowGuestPickModalAtom);
 
   const searchParams = new URLSearchParams(location.search)
   const feedbackCount = searchParams.get("feedbackCount")
@@ -59,7 +64,7 @@ export default function BookingPage() {
   }, [bookingInfo.dateInfo])
 
   const handleBackNavigateMouseClick = useCallback(() => {
-    navigate(-1)
+    navigate(`/homestay/${bookingInfo.homestayInfo?.id}`)
   }, [])
 
   const handleCheckPromotion = useCallback(() => {
@@ -85,9 +90,17 @@ export default function BookingPage() {
     setProInputvalue(value);
   }, [])
 
+  const handleEditDatePick = useCallback(() => {
+    setIsShowCalendarModal(true);
+  }, [])
+
+  const handleEditGuestPick = useCallback(() => {
+    setIsShowGuestPickModal(true);
+  }, [])
+
   useEffect(() => {
     if (!bookingInfo.homestayInfo) {
-      navigate(-1)
+      navigate(`/homestay/${searchParams.get("homestayId")}`)
     }
   }, [bookingInfo.homestayInfo])
 
@@ -132,14 +145,14 @@ export default function BookingPage() {
                   <S.StyledBookInfoTitle>Ngày</S.StyledBookInfoTitle>
                   <S.StyledBookInfoDesc>{ datePick }</S.StyledBookInfoDesc>
                 </S.StyledBookInfoItemLeft>
-                <S.StyledButtonEditInfo>Chỉnh sửa</S.StyledButtonEditInfo>
+                <S.StyledButtonEditInfo onClick={ handleEditDatePick }>Chỉnh sửa</S.StyledButtonEditInfo>
               </S.StyledBookInfoItem>
               <S.StyledBookInfoItem>
                 <S.StyledBookInfoItemLeft>
                   <S.StyledBookInfoTitle>Khách</S.StyledBookInfoTitle>
                   <S.StyledBookInfoDesc>{ bookingInfo.guestCount } khách</S.StyledBookInfoDesc>
                 </S.StyledBookInfoItemLeft>
-                <S.StyledButtonEditInfo>Chỉnh sửa</S.StyledButtonEditInfo>
+                <S.StyledButtonEditInfo onClick={ handleEditGuestPick }>Chỉnh sửa</S.StyledButtonEditInfo>
               </S.StyledBookInfoItem>
             </S.StyledBookInfoWrapper>
 
@@ -283,7 +296,9 @@ export default function BookingPage() {
           </S.StyledMidSectionRight>
         </S.StyledMidSectionContainer>
       </S.StyledContentWrapper>)}
-
+      
+      { isShowCalendarModal && <CalendarModal/> }
+      { isShowGuestPickModal && <GuestPickModal maxGuest={ bookingInfo.homestayInfo?.capacity ?? 0 }/> }
       <MainFooter/>
     </S.StyledContainer>
   )
