@@ -16,14 +16,14 @@ export function formatDateSlice(date: Date): string {
 
 export function formatDateStrike(date: Date): string {
   let day: number = date.getDate();
-  let month: number = date.getMonth() + 1;
+  let month: any = date.getMonth() + 1;
   let year: number = date.getFullYear();
 
   if (day < 10) {
     day = 0 + day;
   }
   if (month < 10) {
-    month = 0 + month;
+    month = "0" + month;
   }
 
   const formattedDate: string = `${year}-${month}-${day}`;

@@ -3,8 +3,8 @@ export interface IPromotionSchema {
   title: string;
   description: string;
   discount_percent: number;
-  start_date: Date;
-  end_date: Date;
+  start_date: string;
+  end_date: string;
 }
 
 export interface IPromotionGetAllRequestParams {

@@ -19,12 +19,15 @@ import { MainFooter } from "@comp/MainFooter";
 import { CalendarModal } from "@comp/Modal/CalendarModal";
 import { GuestPickModal } from "@comp/Modal/GuestPickModal";
 import { AnimatePresence } from "framer-motion";
+import { useBookingActions } from "@store/booking/booking.actions";
+import { IBookingCreateRequestBody } from "@store/booking/booking.schema";
 
 export default function BookingPage() {
   const [isloading, setIsLoading] = useState<boolean>(true);
   const navigate = useNavigate();
   const location = useLocation();
   const promotionActions = usePromotionActions();
+  const bookingActions = useBookingActions();
   const [proInputValue, setProInputvalue] = useState("");
   const [proHint, setProHint] = useState("");
 
@@ -98,6 +101,19 @@ export default function BookingPage() {
     setIsShowGuestPickModal(true);
   }, [])
 
+  const handleBookingRequest = useCallback(() => {
+    const bookingCreateRequestBody: IBookingCreateRequestBody = {
+      checkin_date: bookingInfo.dateInfo.formatStrikeStartDate?.toString()!,
+      number_of_day: bookingInfo.dateInfo.dateCount!,
+      number_of_guest: bookingInfo.guestCount,
+      promotion_id: proPicked?.title ?? "None"
+    }
+    const username = bookingInfo.user.user?.username!;
+    const homestayId = bookingInfo.homestayInfo?.id.toString()!;
+    
+    bookingActions.create(username, homestayId, bookingCreateRequestBody);
+  }, [bookingInfo, proPicked])
+
   useEffect(() => {
     if (!bookingInfo.homestayInfo) {
       navigate(`/homestay/${searchParams.get("homestayId")}`)
@@ -168,7 +184,7 @@ export default function BookingPage() {
                     <S.StyledPaymentMethodHint>Trả trực tiếp bằng tiền mặt tại quầy lễ tân.</S.StyledPaymentMethodHint>
                   </S.StyledPaymentMethodItemLeft>
                   <S.StyledPaymentMethodItemRight>
-                    <S.StyledPaymentMethodPickButton checked type="radio"/>
+                    <S.StyledPaymentMethodPickButton readOnly checked type="radio"/>
                   </S.StyledPaymentMethodItemRight>
                 </S.StyledPaymentMethodItem>
                 <S.StyledLineHoz/>
@@ -216,7 +232,7 @@ export default function BookingPage() {
             <S.StyledPolicyWrapper>
               Bằng việc chọn nút bên dưới, tôi đồng ý với Nội quy nhà của Chủ nhà, Quy chuẩn chung đối với khách. Tôi đồng ý thanh toán tổng số tiền được hiển thị.
             </S.StyledPolicyWrapper>
-            <S.StyledBookingButton>Yêu cầu đặt phòng</S.StyledBookingButton>
+            <S.StyledBookingButton onClick={ handleBookingRequest }>Yêu cầu đặt phòng</S.StyledBookingButton>
           </S.StyledMidSectionLeft>
 
           <S.StyledMidSectionRight>
@@ -299,7 +315,6 @@ export default function BookingPage() {
       
       { isShowCalendarModal && <CalendarModal/> }
       { isShowGuestPickModal && <GuestPickModal maxGuest={ bookingInfo.homestayInfo?.capacity ?? 0 }/> }
-      <MainFooter/>
     </S.StyledContainer>
   )
 }

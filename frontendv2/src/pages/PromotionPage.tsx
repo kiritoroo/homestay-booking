@@ -7,6 +7,7 @@ import { authSelector } from "@store/user/user.selectors";
 import { Loading } from "@comp/Loading";
 import { usePromotionActions } from "@store/promotion/promotion.actions";
 import { IPromotionGetAllRequestParams, IPromotionSchema } from "@store/promotion/promotion.schema";
+import { MainFooter } from "@comp/MainFooter";
 
 export default function PromotionPage() {
   const { user } = useRecoilValue(authSelector);
@@ -16,13 +17,13 @@ export default function PromotionPage() {
 
   const promotionGetAllRequestParams = useMemo<IPromotionGetAllRequestParams> (() => ({
     page_id: 1,
-    page_size: 5
+    page_size: 10
   }), [])
 
   useLayoutEffect(() => {
     promotionActions.getAll(promotionGetAllRequestParams)
       .then((res: IPromotionSchema[]) => {
-        setPromotionData(res)
+        setPromotionData(res.filter((item) => item.title != "None"))
       })
   }, [])
 
@@ -65,6 +66,7 @@ export default function PromotionPage() {
           { renderedPromotionList }
         </S.StyledPromotionListWrapper>
       </S.StyledContentWrapper>)}
+
     </S.StyledContainer>
   )
 }

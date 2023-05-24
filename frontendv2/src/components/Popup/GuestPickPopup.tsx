@@ -22,16 +22,16 @@ export const GuestPickPopup = (props: Props) => {
     if (guestCount < maxGuest) {
       setGuestCount((prev) => prev + 1)
       setSearchParams((prev) => 
-        Object.fromEntries([...prev, ["numberOfGuest", guestCount+1]])
+        Object.fromEntries([...prev, ["numberOfGuests", guestCount+1]])
       )
     }
-  }, [guestCount])
+  }, [guestCount, maxGuest])
 
   const handleGuestSub = useCallback(() => {
     if (guestCount > 1) {
       setGuestCount((prev) => prev - 1);
       setSearchParams((prev) => 
-        Object.fromEntries([...prev, ["numberOfGuest", guestCount-1]])
+        Object.fromEntries([...prev, ["numberOfGuests", guestCount-1]])
       )
     }
   }, [guestCount])
@@ -40,7 +40,7 @@ export const GuestPickPopup = (props: Props) => {
     if (petCount < 5) {
       setPetCount((prev) => prev + 1)
     }
-  }, [guestCount])
+  }, [petCount])
 
   const handlePetSub = useCallback(() => {
     if (petCount > 0) {

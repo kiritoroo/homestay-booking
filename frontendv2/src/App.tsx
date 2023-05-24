@@ -12,6 +12,7 @@ import PersonalInfoPage from "./pages/PersonalInfoPage"
 import HomestayDetailPage from "./pages/HomestayDetailPage"
 import BookingPage from "./pages/BookingPage"
 import PromotionPage from "./pages/PromotionPage"
+import TripsPage from "./pages/TripsPage"
 
 export const App = () => {
   const auth = useRecoilValue(authSelector);
@@ -31,6 +32,7 @@ export const App = () => {
             <Route path="/account/personal-info" element={<PersonalInfoPage/>}/>
             <Route path="/booking" element={<BookingPage/>}/>
             <Route path="/promotion" element={<PromotionPage/>}/>
+            <Route path="/trips" element={<TripsPage/>}/>
           </Route>
           <Route path="/homestay/:id" element={<HomestayDetailPage/>}/>
         </Routes>

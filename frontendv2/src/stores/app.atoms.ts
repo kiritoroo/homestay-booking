@@ -82,3 +82,18 @@ export const isShowGuestPickModalAtom = atom<boolean>({
   key: 'isShowGuestPickModalAtom',
   default: false
 })
+
+export const isShowCancelPolicyModalAtom = atom<boolean>({
+  key: 'isShowCancelPolicyModalAtom',
+  default: false
+})
+
+export const isShowBookPolictyModalAtom = atom<boolean>({
+  key: 'isShowBookPolictyModalAtom',
+  default: false
+})
+
+export const selectedBookingIdAtom = atom<string | null>({
+  key: 'selectedBookingIdAtom',
+  default: null
+})

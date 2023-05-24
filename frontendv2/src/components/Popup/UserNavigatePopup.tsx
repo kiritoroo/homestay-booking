@@ -35,6 +35,10 @@ export const UserNavigatePopup = (props: Props) => {
     navigate('/account')
   }, [])
 
+  const handleTripsMouseClick = useCallback(() => {
+    navigate('/trips')
+  }, [])
+
   const handlePromotionMouseClick = useCallback(() => {
     navigate('/promotion')
   }, [])
@@ -105,6 +109,10 @@ export const UserNavigatePopup = (props: Props) => {
         <S.StyledButton
           onClick={ handleAccountMouseClick }>
           Tài khoản
+        </S.StyledButton>
+        <S.StyledButton
+          onClick={ handleTripsMouseClick }>
+          Chuyến đi
         </S.StyledButton>
       </S.StyledGroupButton>
 

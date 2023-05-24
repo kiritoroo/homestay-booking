@@ -67,7 +67,7 @@ export const GuestPickModal = (props: Props) => {
   const handleSaveButtonMouseClick = useCallback(() => {
     setGuestCountPicked(guestCountCurr);
     setSearchParams((prev) => 
-      Object.fromEntries([...prev, ["numberOfGuest", guestCountCurr]])
+      Object.fromEntries([...prev, ["numberOfGuests", guestCountCurr]])
     )
     setTimeout(() => {
       setIsShowGuestPickModal(false);

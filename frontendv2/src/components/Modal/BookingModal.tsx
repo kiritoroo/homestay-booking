@@ -71,16 +71,16 @@ export const BookingModal = (props: Props) => {
 
   useEffect(() => {
     if ([...searchParams].length != 0) {
-      const paramNumberOfGuest = searchParams.get("numberOfGuest");
+      const paramNumberOfGuest = searchParams.get("numberOfGuests");
 
       if (paramNumberOfGuest != null) {
         setGuestPicked(Number(paramNumberOfGuest));
         setSearchParams((prev) => 
-          Object.fromEntries([...searchParams, ["numberOfGuest", paramNumberOfGuest]])
+          Object.fromEntries([...searchParams, ["numberOfGuests", paramNumberOfGuest]])
         )
       } else {
         setSearchParams((prev) => 
-          Object.fromEntries([...searchParams, ["numberOfGuest", guestPicked]])
+          Object.fromEntries([...searchParams, ["numberOfGuests", guestPicked]])
         )
       }
     }
