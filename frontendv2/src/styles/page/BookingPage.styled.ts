@@ -399,8 +399,9 @@ export const StyledPriceTotalTitle = styled.div`
 `
 
 export const StyledPriceTotalValue = styled.div`
-  font-weight: 500;
-  font-size: 18px;
+  font-weight: 600;
+  font-size: 20px;
+  color: #C33E1F;
 `
 
 export const StyledProContainer = styled.div`

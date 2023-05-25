@@ -67,7 +67,6 @@ export const promotionPickedAtom = atom<IPromotionSchema | null>({
   default: null
 })
 
-
 export const promotionCopyAtom = atom<string | null>({
   key: 'promotionCopyAtom',
   default: null
@@ -96,4 +95,9 @@ export const isShowBookPolictyModalAtom = atom<boolean>({
 export const selectedBookingIdAtom = atom<string | null>({
   key: 'selectedBookingIdAtom',
   default: null
+})
+
+export const isShowTripDetailModalAtom = atom<boolean>({
+  key: 'isShowTripDetailModalAtom',
+  default: false
 })

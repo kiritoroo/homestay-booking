@@ -318,7 +318,7 @@ export default function BookingPage() {
               
               <S.StyledPriceDetailWrapper>
                 <S.StyledPriceTotalTitle>Tổng (USD)</S.StyledPriceTotalTitle>
-                <S.StyledPriceTotalValue><BiDollar size={"18px"} color="#222222"/> 
+                <S.StyledPriceTotalValue><BiDollar size={"20px"} color="#C33E1F"/> 
                   { totalPrice.toLocaleString('en-US', { minimumFractionDigits: 1, maximumFractionDigits: 1 }) }
                 </S.StyledPriceTotalValue>
               </S.StyledPriceDetailWrapper>
@@ -326,7 +326,7 @@ export default function BookingPage() {
               { proPicked &&
               <S.StyledPriceDetailWrapper>
                 <S.StyledPriceTotalTitle>Tổng sau giảm giá (USD)</S.StyledPriceTotalTitle>
-                <S.StyledPriceTotalValue style={{ textDecoration: "line-through" }}><BiDollar size={"18px"} color="#222222"/> 
+                <S.StyledPriceTotalValue style={{ textDecoration: "line-through" }}><BiDollar size={"20px"} color="#C33E1F"/> 
                   { dicountPrice.toLocaleString('en-US', { minimumFractionDigits: 1, maximumFractionDigits: 1 }) }
                 </S.StyledPriceTotalValue>
               </S.StyledPriceDetailWrapper> }

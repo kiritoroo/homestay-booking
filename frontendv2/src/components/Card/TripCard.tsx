@@ -6,8 +6,9 @@ import { useRecoilState, useRecoilValue } from "recoil";
 import { authSelector } from "@store/user/user.selectors";
 import { useBookingActions } from "@store/booking/booking.actions";
 import { useNavigate } from "react-router-dom";
-import { isShowCancelPolicyModalAtom, selectedBookingIdAtom } from "@store/app.atoms";
+import { isShowCancelPolicyModalAtom, isShowTripDetailModalAtom, selectedBookingIdAtom } from "@store/app.atoms";
 import { CancelPolicyModal } from "@comp/Modal/CancelPolicyModal";
+import { TripDetailModal } from "@comp/Modal/TripDetailModal";
 
 interface Props {
   booking: IBookingCreateResponse
@@ -17,6 +18,7 @@ export const Tripcard = (props: Props) => {
   const { booking } = props;
   const { user } = useRecoilValue(authSelector);
   const [isShowCancelPolicyModal, setIsShowCancelPolicyModal] = useRecoilState(isShowCancelPolicyModalAtom);
+  const [isShowTripDetailModal, setIsShowTripDetailModal] = useRecoilState(isShowTripDetailModalAtom);
   const [selectedBookingId, setSelectedBokkingId] = useRecoilState(selectedBookingIdAtom);
 
   const bookingActions = useBookingActions();
@@ -29,6 +31,11 @@ export const Tripcard = (props: Props) => {
     bookingActions.abort(username, homestayId, bookingId)
       .then((res) => {})
   }, [booking])
+
+  const handleViewDetailMouseClick = useCallback(() => {
+    setSelectedBokkingId(booking.booking.booking_id);
+    setIsShowTripDetailModal(true);
+  }, [])
 
   const handleCancleButtonMouseClick = useCallback(() => {
     setSelectedBokkingId(booking.booking.booking_id);
@@ -46,12 +53,12 @@ export const Tripcard = (props: Props) => {
 
   return (
     <S.StyledContainer>
-      <S.StyledImage src={ booking.homestay_booking.main_image }/>
-      <S.StyledBooInfoWrapper>
-        <S.StyledBookInfoTitle>Mã đặt phòng: &nbsp; </S.StyledBookInfoTitle>
+      <S.StyledImage onClick={ handleViewDetailMouseClick } src={ booking.homestay_booking.main_image }/>
+      <S.StyledBooInfoWrapper onClick={ handleViewDetailMouseClick } >
+        <S.StyledBookInfoTitle onClick={ handleViewDetailMouseClick }>Mã đặt phòng/đặt chỗ: &nbsp; </S.StyledBookInfoTitle>
         <S.StyledBookInfoValue>{ booking.booking.booking_id }</S.StyledBookInfoValue>
       </S.StyledBooInfoWrapper>
-      <S.StyledBooInfoWrapper>
+      <S.StyledBooInfoWrapper onClick={ handleViewDetailMouseClick }>
         <S.StyledBookInfoTitle>Trạng thái thanh toán: &nbsp; </S.StyledBookInfoTitle>
         { booking.payment.status == "unpaid"
           ? <S.StyledBookInfoValue style={{ color: "#7D97B8" }}> Chưa thanh toán </S.StyledBookInfoValue>
@@ -60,7 +67,7 @@ export const Tripcard = (props: Props) => {
           : <S.StyledBookInfoValue style={{ color: "#3DC373" }}> Đã thanh toán </S.StyledBookInfoValue>
         }
       </S.StyledBooInfoWrapper>
-      <S.StyledBooInfoWrapper>
+      <S.StyledBooInfoWrapper onClick={ handleViewDetailMouseClick } >
         <S.StyledBookInfoTitle>Trạng thái chuyến đi: &nbsp; </S.StyledBookInfoTitle>
         { booking.booking.status == "validated"
           ? <S.StyledBookInfoValue style={{ color: "#7D97B8" }}>Chưa nhận phòng </S.StyledBookInfoValue>
@@ -71,7 +78,7 @@ export const Tripcard = (props: Props) => {
       </S.StyledBooInfoWrapper>
       <S.StyledLineHoz/>
 
-      <S.StyledDateInfoWrapper>
+      <S.StyledDateInfoWrapper onClick={ handleViewDetailMouseClick } >
         <S.StyledDateCheckInWrapper>
           <S.StyledDateInfoTitle>Ngày nhận phòng</S.StyledDateInfoTitle>
           <S.StyledDateInfoValue>{booking.booking.status != "cancel" ? formatUtils.formatDateString(new Date(booking.booking.checkin_date)) : "___" }</S.StyledDateInfoValue>
@@ -88,6 +95,7 @@ export const Tripcard = (props: Props) => {
       }
 
       {isShowCancelPolicyModal && selectedBookingId == booking.booking.booking_id && <CancelPolicyModal onCancel={ handleCancleBooking } booking={ booking }/>}
+      {isShowTripDetailModal && selectedBookingId == booking.booking.booking_id && <TripDetailModal booking={ booking }/>}
     </S.StyledContainer>
   )
 }
