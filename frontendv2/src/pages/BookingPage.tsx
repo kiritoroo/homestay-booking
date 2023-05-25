@@ -325,8 +325,8 @@ export default function BookingPage() {
 
               { proPicked &&
               <S.StyledPriceDetailWrapper>
-                <S.StyledPriceTotalTitle>Tổng sau giảm giá (USD)</S.StyledPriceTotalTitle>
-                <S.StyledPriceTotalValue style={{ textDecoration: "line-through" }}><BiDollar size={"20px"} color="#C33E1F"/> 
+                <S.StyledPriceTotalTitle>Tổng phải trả (USD)</S.StyledPriceTotalTitle>
+                <S.StyledPriceTotalValue><BiDollar size={"20px"} color="#C33E1F"/> 
                   { dicountPrice.toLocaleString('en-US', { minimumFractionDigits: 1, maximumFractionDigits: 1 }) }
                 </S.StyledPriceTotalValue>
               </S.StyledPriceDetailWrapper> }
