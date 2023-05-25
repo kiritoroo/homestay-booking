@@ -10,7 +10,7 @@ export const StyledContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: rgba(80, 80, 80, 0.2);
+  background-color: rgba(80, 80, 80, 0.5);
   z-index: 99999;
   cursor: auto;
 `

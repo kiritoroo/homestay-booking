@@ -116,10 +116,10 @@ export const LoginModal = (props: Props) => {
         }, 200)
       })
       .catch((error: Error) => {
-        const errorStatus = Number(error.message);
-        if (errorStatus == 401) {
+        const errorJson: any = JSON.parse(error.message);
+        if (errorJson.status == 401) {
           setLoginfailedText("Đăng nhập thất bại!")
-        } else if (errorStatus == 404) {
+        } else if (errorJson.status == 404) {
           setLoginfailedText("Tài khoản không tồn tại!")
         }
         setTimeout(() => {

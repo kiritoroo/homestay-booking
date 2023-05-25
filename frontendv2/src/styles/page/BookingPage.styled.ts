@@ -500,3 +500,14 @@ export const StyledProHint = styled.div`
   font-size: 15px;
   margin-left: 10px;
 `
+
+export const StyledLoadingWrapper = styled.div`
+  position: relative;
+  width: 200px;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px 35px;
+  margin-top: 10px;
+`

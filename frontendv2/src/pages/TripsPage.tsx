@@ -20,7 +20,7 @@ export default function TripsPage() {
 
   const bookingGetAllRequestParams = useMemo<IBookingGetAllRequestParam> (() => ({
     page_id: 1,
-    page_size: 5
+    page_size: 10
   }), [])
 
   const handleNothingButtonClick = useCallback(() => {

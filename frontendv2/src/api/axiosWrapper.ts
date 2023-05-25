@@ -53,8 +53,8 @@ function useAxiosWrapper() {
 
   function handleError(error: AxiosError) {
     if (axios.isAxiosError(error)) {
-      const status = error.response?.status;
-      throw new Error(status?.toString());
+      const res = error.response
+      throw new Error(JSON.stringify(res));
     } else {
       throw error;
     }

@@ -54,10 +54,10 @@ export const Tripcard = (props: Props) => {
       <S.StyledBooInfoWrapper>
         <S.StyledBookInfoTitle>Trạng thái thanh toán: &nbsp; </S.StyledBookInfoTitle>
         { booking.payment.status == "unpaid"
-          ? <S.StyledBookInfoValue style={{ color: "#C13515" }}> Chưa thanh toán </S.StyledBookInfoValue>
-            : booking.payment.status == "invalidated"
-              ? <S.StyledBookInfoValue style={{ color: "#C13515" }}> Hủy thanh toán </S.StyledBookInfoValue>
-              : <S.StyledBookInfoValue style={{ color: "#3DC373" }}> Đã thanh toán </S.StyledBookInfoValue>
+          ? <S.StyledBookInfoValue style={{ color: "#7D97B8" }}> Chưa thanh toán </S.StyledBookInfoValue>
+          : booking.payment.status == "invalidated"
+          ? <S.StyledBookInfoValue style={{ color: "#C13515" }}> Hủy thanh toán </S.StyledBookInfoValue>
+          : <S.StyledBookInfoValue style={{ color: "#3DC373" }}> Đã thanh toán </S.StyledBookInfoValue>
         }
       </S.StyledBooInfoWrapper>
       <S.StyledBooInfoWrapper>
@@ -65,8 +65,8 @@ export const Tripcard = (props: Props) => {
         { booking.booking.status == "validated"
           ? <S.StyledBookInfoValue style={{ color: "#7D97B8" }}>Chưa nhận phòng </S.StyledBookInfoValue>
           : booking.booking.status == "cancel"
-            ? <S.StyledBookInfoValue style={{ color: "#C13515" }}> Đã hủy bỏ </S.StyledBookInfoValue>
-            : <S.StyledBookInfoValue style={{ color: "#3DC373" }}> Đã nhận phòng </S.StyledBookInfoValue>
+          ? <S.StyledBookInfoValue style={{ color: "#C13515" }}> Đã hủy bỏ </S.StyledBookInfoValue>
+          : <S.StyledBookInfoValue style={{ color: "#3DC373" }}> Đã nhận phòng </S.StyledBookInfoValue>
         }
       </S.StyledBooInfoWrapper>
       <S.StyledLineHoz/>

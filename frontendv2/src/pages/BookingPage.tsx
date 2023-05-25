@@ -12,7 +12,7 @@ import { MdModeComment, MdKingBed } from "react-icons/md";
 import { BiDollar } from "react-icons/bi";
 import { usePromotionActions } from "@store/promotion/promotion.actions";
 import { IPromotionSchema } from "@store/promotion/promotion.schema";
-import { isShowCalendarModalAtom, isShowGuestPickModalAtom, promotionPickedAtom } from "@store/app.atoms";
+import { isShowBookPolictyModalAtom, isShowCalendarModalAtom, isShowGuestPickModalAtom, promotionPickedAtom } from "@store/app.atoms";
 import { RiPaypalFill, RiVisaFill } from "react-icons/ri";
 import { FaRegMoneyBillAlt } from "react-icons/fa";
 import { MainFooter } from "@comp/MainFooter";
@@ -20,16 +20,22 @@ import { CalendarModal } from "@comp/Modal/CalendarModal";
 import { GuestPickModal } from "@comp/Modal/GuestPickModal";
 import { AnimatePresence } from "framer-motion";
 import { useBookingActions } from "@store/booking/booking.actions";
-import { IBookingCreateRequestBody } from "@store/booking/booking.schema";
+import { IBookingCreateRequestBody, IBookingCreateResponse } from "@store/booking/booking.schema";
+import { BookPolicyModal } from "@comp/Modal/BookPolicyModal";
 
 export default function BookingPage() {
   const [isloading, setIsLoading] = useState<boolean>(true);
   const navigate = useNavigate();
   const location = useLocation();
+  const [isPending, setIsPending] = useState(false);
+  const [bookingResponse, setBookingResponse] = useState<IBookingCreateResponse | null>(null);
+  const [messageResponse, setMessageResponse] = useState<string>("");
+
   const promotionActions = usePromotionActions();
   const bookingActions = useBookingActions();
   const [proInputValue, setProInputvalue] = useState("");
   const [proHint, setProHint] = useState("");
+  const [isShowBookPolicyModal, setIsShowBookPolicyModal] = useRecoilState(isShowBookPolictyModalAtom);
 
   const [proPicked, setProPicked] = useRecoilState(promotionPickedAtom);
   const bookingInfo = useRecoilValue(bookingInfoSelector);
@@ -77,11 +83,11 @@ export default function BookingPage() {
         setProHint("Áp dụng mã giảm giá thành công!")
       })
       .catch((error) => {
-        const errorStatus = Number(error.message);
+        const errorJson: any = JSON.parse(error.message);
         setProPicked(null);
-        if (errorStatus == 404) {
+        if (errorJson.status == 404) {
           setProHint("Mã giảm giá không tồn tại!")
-        } else if (errorStatus == 400) {
+        } else if (errorJson.status == 400) {
           setProHint("Mã giảm giá không hợp lệ!")
         }
       })
@@ -111,8 +117,31 @@ export default function BookingPage() {
     const username = bookingInfo.user.user?.username!;
     const homestayId = bookingInfo.homestayInfo?.id.toString()!;
     
-    bookingActions.create(username, homestayId, bookingCreateRequestBody);
+    bookingActions.create(username, homestayId, bookingCreateRequestBody)
+      .then((res: IBookingCreateResponse) => {
+        setBookingResponse(res);
+        setMessageResponse("bookingSuccess")
+      })
+      .catch((error: Error) => {
+        const errorJson: any = JSON.parse(error.message);
+        if (errorJson.data.error=="user has already booked") {
+          setMessageResponse("userBooked")
+        } else if (errorJson.data.error=="this homestay has been booked in this time 1") {
+          setMessageResponse("homestayBooked")
+        }
+      })
+      .finally(() => {
+        setIsShowBookPolicyModal(true);
+      })
   }, [bookingInfo, proPicked])
+
+  const handleBookButtonMouseClick = useCallback(() => {
+    setIsPending(true);
+    setTimeout(() => {
+      setIsPending(false);
+      handleBookingRequest();
+    }, 800);
+  }, [])
 
   useEffect(() => {
     if (!bookingInfo.homestayInfo) {
@@ -232,7 +261,14 @@ export default function BookingPage() {
             <S.StyledPolicyWrapper>
               Bằng việc chọn nút bên dưới, tôi đồng ý với Nội quy nhà của Chủ nhà, Quy chuẩn chung đối với khách. Tôi đồng ý thanh toán tổng số tiền được hiển thị.
             </S.StyledPolicyWrapper>
-            <S.StyledBookingButton onClick={ handleBookingRequest }>Yêu cầu đặt phòng</S.StyledBookingButton>
+            { isPending 
+            ? (
+            <S.StyledLoadingWrapper>
+              <Loading size={8}/>
+            </S.StyledLoadingWrapper>)
+            : (
+              <S.StyledBookingButton onClick={ handleBookButtonMouseClick }>Yêu cầu đặt phòng</S.StyledBookingButton>)
+            }
           </S.StyledMidSectionLeft>
 
           <S.StyledMidSectionRight>
@@ -315,6 +351,7 @@ export default function BookingPage() {
       
       { isShowCalendarModal && <CalendarModal/> }
       { isShowGuestPickModal && <GuestPickModal maxGuest={ bookingInfo.homestayInfo?.capacity ?? 0 }/> }
+      { isShowBookPolicyModal && <BookPolicyModal booking={ bookingResponse } message={ messageResponse }/> }
     </S.StyledContainer>
   )
 }
