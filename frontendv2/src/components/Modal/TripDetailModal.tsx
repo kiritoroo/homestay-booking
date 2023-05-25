@@ -106,7 +106,7 @@ export const TripDetailModal = (props: Props) => {
             <S.StyledLineHoz/>
             <S.StyledGuestInfoWrapper>
               <S.StyledGuestInfoLabel>Thời lượng chuyến đi</S.StyledGuestInfoLabel>
-              <S.StyledGuestInfoValue>{ dateCount }</S.StyledGuestInfoValue>
+              <S.StyledGuestInfoValue>{ dateCount } đêm</S.StyledGuestInfoValue>
             </S.StyledGuestInfoWrapper>
             <S.StyledLineHoz/>
 
