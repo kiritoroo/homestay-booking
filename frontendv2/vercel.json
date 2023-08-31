@@ -1,5 +1,5 @@
 {
-  "rewrites": [
+  "redirects": [
     {
       "source": "/api/:match*",
       "destination": "https://gin-homestay.onrender.com/api/:match*"
