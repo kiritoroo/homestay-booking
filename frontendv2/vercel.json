@@ -1,0 +1,9 @@
+{
+  "rewrites": [
+    {
+      "source": "/api/:path(.*)",
+      "destination": "https://gin-homestay.onrender.com/:path"
+    },
+    { "source": "/(.*)", "destination": "/" }
+  ]
+}
