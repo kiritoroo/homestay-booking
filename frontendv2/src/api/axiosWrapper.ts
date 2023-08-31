@@ -1,23 +1,23 @@
-import { useRecoilState, useRecoilValue } from 'recoil';
-import axios, { AxiosRequestConfig, AxiosResponse, AxiosError } from 'axios';
-import { authSelector } from '@store/user/user.selectors';
+import { useRecoilState, useRecoilValue } from "recoil";
+import axios, { AxiosRequestConfig, AxiosResponse, AxiosError } from "axios";
+import { authSelector } from "@store/user/user.selectors";
 
 export { useAxiosWrapper };
 
 function useAxiosWrapper() {
   const axiosInstance = axios.create({
     withCredentials: true,
-    baseURL: '/api',
-    timeout: 2000
-  })
+    baseURL: "/api",
+    timeout: 2000,
+  });
 
-  const auth = useRecoilValue(authSelector); 
+  const auth = useRecoilValue(authSelector);
 
   return {
-    get: request('GET'),
-    post: request('POST'),
-    put: request('PUT'),
-    delete: request('DELETE'),
+    get: request("GET"),
+    post: request("POST"),
+    put: request("PUT"),
+    delete: request("DELETE"),
   };
 
   function request(method: string) {
@@ -27,15 +27,13 @@ function useAxiosWrapper() {
         headers: authHeader(),
       };
       if (body) {
-        config.headers!['Content-Type'] = 'application/json';
+        config.headers!["Content-Type"] = "application/json";
         config.data = body;
       }
       if (params) {
         config.params = params;
       }
-      return axiosInstance(url, config)
-        .then(handleResponse)
-        .catch(handleError);
+      return axiosInstance(url, config).then(handleResponse).catch(handleError);
     };
   }
 
@@ -43,7 +41,7 @@ function useAxiosWrapper() {
     if (auth.isAuth) {
       return { Authorization: `Bearer ${auth.token}` };
     } else {
-      return {}
+      return {};
     }
   }
 
@@ -53,7 +51,7 @@ function useAxiosWrapper() {
 
   function handleError(error: AxiosError) {
     if (axios.isAxiosError(error)) {
-      const res = error.response
+      const res = error.response;
       throw new Error(JSON.stringify(res));
     } else {
       throw error;
