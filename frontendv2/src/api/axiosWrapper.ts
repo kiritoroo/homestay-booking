@@ -6,7 +6,6 @@ export { useAxiosWrapper };
 
 function useAxiosWrapper() {
   const axiosInstance = axios.create({
-    withCredentials: true,
     baseURL: "/api",
     timeout: 2000,
   });
@@ -33,7 +32,9 @@ function useAxiosWrapper() {
       if (params) {
         config.params = params;
       }
-      return axiosInstance(url, config).then(handleResponse).catch(handleError);
+      return axiosInstance(`${url}/`, config)
+        .then(handleResponse)
+        .catch(handleError);
     };
   }
 
