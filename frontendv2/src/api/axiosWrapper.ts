@@ -6,7 +6,7 @@ export { useAxiosWrapper };
 
 function useAxiosWrapper() {
   const axiosInstance = axios.create({
-    baseURL: "/api",
+    baseURL: "https://gin-homestay.onrender.com/api",
     timeout: 2000,
   });
 
