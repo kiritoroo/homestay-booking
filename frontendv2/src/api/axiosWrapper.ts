@@ -33,7 +33,7 @@ function useAxiosWrapper() {
         config.params = params;
       }
       console.log(url);
-      const specialsUrl = ["/homestays"];
+      const specialsUrl = ["/homestays", "/promotions"];
       return axiosInstance(
         specialsUrl.includes(url) ? `${url}/` : `${url}`,
         config
