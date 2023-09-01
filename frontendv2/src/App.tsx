@@ -24,7 +24,7 @@ export const App = () => {
   const isShowRegisterModal = useRecoilValue(isShowRegisterModalAtom);
   axios
     .get(
-      "https://gin-homestay.onrender.com/api/homestays/?page_size=5&page_id=1"
+      "https://gin-homestay.onrender.com/api/homestays/1?page_size=5&page_id=1"
     )
     .then((res) => {
       console.log(res);
