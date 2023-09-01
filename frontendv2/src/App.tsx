@@ -22,13 +22,7 @@ export const App = () => {
   const auth = useRecoilValue(authSelector);
   const isShowLoginModal = useRecoilValue(isShowLoginModalAtom);
   const isShowRegisterModal = useRecoilValue(isShowRegisterModalAtom);
-  axios
-    .get(
-      "https://gin-homestay.onrender.com/api/homestays/1?page_size=5&page_id=1"
-    )
-    .then((res) => {
-      console.log(res);
-    });
+
   return (
     <React.Fragment>
       {isShowLoginModal && <LoginModal />}
